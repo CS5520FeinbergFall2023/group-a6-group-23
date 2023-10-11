@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/team_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team Name: S3KB"
+        app:layout_constraintBottom_toTopOf="@+id/a6_at_your_service"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/a6_at_your_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="At Your Service"
+        app:layout_constraintBottom_toTopOf="@+id/firebase_realtime_database"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/team_name" />
+
+    <Button
+        android:id="@+id/firebase_realtime_database"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Firebase Realtime Database"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/a6_at_your_service" />
+</androidx.constraintlayout.widget.ConstraintLayout>
