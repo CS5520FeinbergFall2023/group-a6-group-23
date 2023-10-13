@@ -3,9 +3,12 @@ package edu.northeastern.s3kb;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,10 +46,18 @@ public class AtYourServiceActivity extends AppCompatActivity {
         Button button1 = new Button(this);
         button1.setId(View.generateViewId());
         button1.setText("Button 1");
+        button1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        button1.setPadding(50, 50, 50, 50);
+        button1.setBackgroundColor(0xFF673AB7);
+        button1.setTextColor(Color.WHITE);
 
         Button button2 = new Button(this);
         button2.setId(View.generateViewId());
         button2.setText("Button 2");
+        button2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        button2.setPadding(50, 50, 50, 50);
+        button2.setBackgroundColor(0xFF673AB7);
+        button2.setTextColor(Color.WHITE);
 
         constraintLayout.addView(button1);
 
