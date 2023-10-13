@@ -68,13 +68,6 @@ public class AtYourServiceActivity extends AppCompatActivity {
         button1.setPadding(50, 50, 50, 50);
         button1.setBackgroundColor(0xFF673AB7);
         button1.setTextColor(Color.WHITE);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
 
         Button button2 = new Button(this);
         button2.setId(View.generateViewId());
