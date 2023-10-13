@@ -3,11 +3,15 @@ package edu.northeastern.s3kb;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -45,7 +49,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedItem = adapterView.getItemAtPosition(i).toString();
                 if("Islamic Interbank Money Market(IIMM)".equals(selectedItem)) {
-                    addButtons();
+                    Log.v("Kaushik", "Here");
+                    addIIMMButtons();
                 }
 
                 if("Bond Info Hub(BIH)".equals(selectedItem)) {
@@ -56,38 +61,40 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
     }
 
-    private void addButtons() {
+    private void addIIMMButtons() {
         Button button1 = new Button(this);
         button1.setId(View.generateViewId());
         button1.setText("Button 1");
+        button1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        button1.setPadding(50, 50, 50, 50);
+        button1.setBackgroundColor(0xFF673AB7);
+        button1.setTextColor(Color.WHITE);
 
         Button button2 = new Button(this);
         button2.setId(View.generateViewId());
         button2.setText("Button 2");
-
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        //button1.setLayoutParams(layoutParams);
-        //button2.setLayoutParams(layoutParams);
+        button2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        button2.setPadding(50, 50, 50, 50);
+        button2.setBackgroundColor(0xFF673AB7);
+        button2.setTextColor(Color.WHITE);
 
         constraintLayout.addView(button1);
 
 
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
-//
-        //constraintSet.connect(button2.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
-        constraintSet.connect(button1.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        constraintSet.connect(button1.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
-        //constraintSet.connect(button2.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-//
+        constraintSet.connect(button1.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(button1.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+        constraintSet.connect(button1.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+        constraintSet.applyTo(constraintLayout);
         constraintLayout.addView(button2);
         constraintSet.clone(constraintLayout);
-        constraintSet.connect(button2.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
-        constraintSet.connect(button2.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        constraintSet.connect(button1.getId(), ConstraintSet.BOTTOM, button2.getId(), ConstraintSet.TOP);
+        constraintSet.applyTo(constraintLayout);
+        constraintSet.connect(button2.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(button2.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+        constraintSet.connect(button2.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+        constraintSet.connect(button2.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
 
     }
