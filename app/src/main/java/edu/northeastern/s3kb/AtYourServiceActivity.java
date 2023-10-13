@@ -4,19 +4,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class AtYourServiceActivity extends AppCompatActivity {
 
-    private String[] dropDownContent = new String[]{"Islamic Interbank Money Market(IIMM)", "Kura's_choice", "Kurrumaddali's_choice", "Kota's Choice"};
+    private String[] dropDownContent = new String[]{"Islamic Interbank Money Market(IIMM)", "Kura's_choice",
+            "Bond Info Hub(BIH)", "Kota's Choice"};
     private ConstraintLayout constraintLayout;
+
+    private String selectedItem;
+
+    private Executor executor = Executors.newSingleThreadExecutor();
+
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    private String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,13 +43,17 @@ public class AtYourServiceActivity extends AppCompatActivity {
         text.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String selectedItem = adapterView.getItemAtPosition(i).toString();
+                selectedItem = adapterView.getItemAtPosition(i).toString();
                 if("Islamic Interbank Money Market(IIMM)".equals(selectedItem)) {
-                    Log.v("Kaushik", "Here");
                     addButtons();
+                }
+
+                if("Bond Info Hub(BIH)".equals(selectedItem)) {
+                    addButtonsBondInfoHub();
                 }
             }
         });
+
     }
 
     private void addButtons() {
@@ -72,5 +89,48 @@ public class AtYourServiceActivity extends AppCompatActivity {
         constraintSet.connect(button2.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
         constraintSet.connect(button2.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
         constraintSet.applyTo(constraintLayout);
+
+    }
+
+    private void addButtonsBondInfoHub() {
+        Button btnHeatMap = new Button(this);
+        btnHeatMap.setId(View.generateViewId());
+        btnHeatMap.setText("HeatMap");
+
+        btnHeatMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                url = "https://api.bnm.gov.my/public/bih/heatmap";
+                Intent intent = new Intent(AtYourServiceActivity.this, BihHeatMapActivity.class);
+                intent.putExtra("heatmap", url);
+                startActivity(intent);
+            }
+
+        });
+
+        Button btnTradingActivities = new Button(this);
+        btnTradingActivities.setId(View.generateViewId());
+        btnTradingActivities.setText("Trading Activities");
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        constraintLayout.addView(btnHeatMap);
+
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+
+        constraintSet.connect(btnHeatMap.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        constraintSet.connect(btnHeatMap.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
+
+        constraintLayout.addView(btnTradingActivities);
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(btnTradingActivities.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
+        constraintSet.connect(btnTradingActivities.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        constraintSet.applyTo(constraintLayout);
+
     }
 }
