@@ -33,13 +33,13 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 String selectedItem = adapterView.getItemAtPosition(i).toString();
                 if("Islamic Interbank Money Market(IIMM)".equals(selectedItem)) {
                     Log.v("Kaushik", "Here");
-                    addButtons();
+                    addIIMMButtons();
                 }
             }
         });
     }
 
-    private void addButtons() {
+    private void addIIMMButtons() {
         Button button1 = new Button(this);
         button1.setId(View.generateViewId());
         button1.setText("Button 1");
@@ -48,29 +48,23 @@ public class AtYourServiceActivity extends AppCompatActivity {
         button2.setId(View.generateViewId());
         button2.setText("Button 2");
 
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        //button1.setLayoutParams(layoutParams);
-        //button2.setLayoutParams(layoutParams);
-
         constraintLayout.addView(button1);
 
 
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
-//
-        //constraintSet.connect(button2.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
-        constraintSet.connect(button1.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        constraintSet.connect(button1.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
-        //constraintSet.connect(button2.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-//
+        constraintSet.connect(button1.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(button1.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+        constraintSet.connect(button1.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+        constraintSet.applyTo(constraintLayout);
         constraintLayout.addView(button2);
         constraintSet.clone(constraintLayout);
-        constraintSet.connect(button2.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
-        constraintSet.connect(button2.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        constraintSet.connect(button1.getId(), ConstraintSet.BOTTOM, button2.getId(), ConstraintSet.TOP);
+        constraintSet.applyTo(constraintLayout);
+        constraintSet.connect(button2.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(button2.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+        constraintSet.connect(button2.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+        constraintSet.connect(button2.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
     }
 }
