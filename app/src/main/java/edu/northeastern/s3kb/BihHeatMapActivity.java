@@ -65,7 +65,7 @@ public class BihHeatMapActivity extends AppCompatActivity {
     }
 
     private void displayDataWithIcons(TextView textView, String data) {
-        data = "{\"data\":{\"tra_date\":\"2023-10-13\",\"sto_code\":\"VK230364\",\"sto_desc\":\"PRESS METAL IMTN 4.450% 18.09.2030\",\"issuer\":\"PRESS METAL\",\"mat_date\":\"2030-09-18\",\"las_trd_pri\":\"100.020\",\"las_trd_yie\":\"4.450\",\"low_yie\":\"4.450\",\"high_yie\":\"4.450\",\"vol\":\"5.00000000000\"},\"meta\":{\"last_updated\":\"2023-10-13 20:38:32\",\"total_result\":1}}";
+
         initializeIconMapping();
         StringBuilder displayText = null;
         try {
@@ -87,13 +87,9 @@ public class BihHeatMapActivity extends AppCompatActivity {
                 }
             }
 
-            //textView.setText(displayText.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        String something = displayText.toString();
-        //textView.setText(displayText.toString());
     }
 
     class RunnableThread implements Runnable
@@ -107,15 +103,6 @@ public class BihHeatMapActivity extends AppCompatActivity {
         public void run() {
             executor.execute(() -> {
                 try {
-                    //to be commented
-                    mainHandler.post(() -> {
-                        TextView tvResponse = findViewById(R.id.tvHeatMapResponse);
-                        displayDataWithIcons(tvResponse, "");
-                        //tvResponse.setText(result);
-
-                    });
-                    //comment this
-
                     URL url = new URL(apiUrl);
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("GET");
@@ -123,8 +110,6 @@ public class BihHeatMapActivity extends AppCompatActivity {
                     urlConnection.setRequestProperty("Accept", "application/vnd.BNM.API.v1+json");
 
                     try {
-                        //int responseCode = urlConnection.getResponseCode();
-
                         BufferedReader bufferedReader = new BufferedReader(
                                 new InputStreamReader(urlConnection.getInputStream()));
 
@@ -138,9 +123,9 @@ public class BihHeatMapActivity extends AppCompatActivity {
                         bufferedReader.close();
                         String result = stringBuilder.toString();
                         mainHandler.post(() -> {
-                            //TextView tvResponse = findViewById(R.id.tvHeatMapResponse);
-                            //displayDataWithIcons(tvResponse, result);
-                             //tvResponse.setText(result);
+                            TextView tvResponse = findViewById(R.id.tvHeatMapResponse);
+                            displayDataWithIcons(tvResponse, result);
+                             tvResponse.setText(result);
 
                         });
                     } finally {

@@ -6,4 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".BihTradingActivities">
 
+    <TextView
+        android:id="@+id/tvResponse"
+        android:layout_width="358dp"
+        android:layout_height="683dp"
+        tools:layout_editor_absoluteX="22dp"
+        tools:layout_editor_absoluteY="24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
