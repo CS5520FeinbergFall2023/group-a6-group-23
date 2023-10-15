@@ -4,10 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
@@ -25,26 +30,38 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import edu.northeastern.s3kb.R;
+
 public class FinancialAndCapitalMarketsActivity extends AppCompatActivity {
 
     private Map<String, String> dataMap;
 
-    private FinancialAndCapitalMarketsActivity.RunnableThread runnableThread;
-
     private Executor executor = Executors.newSingleThreadExecutor();
 
     private Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    private RecyclerView recyclerView;
+    private List<String> itemList;
+    private ItemAdapter itemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.financial_and_capital_markets_activity);
 
+        recyclerView = findViewById(R.id.recyclerView);
+        itemList = new ArrayList<>();
+        itemAdapter = new ItemAdapter(itemList);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(itemAdapter);
+
+        initializedataMap();
+
         Intent intent = getIntent();
         String receivedValue = intent.getStringExtra("MSB");
         System.out.println("fiN aCTIVITY Created" + receivedValue);
         fetchData(receivedValue);
-
     }
 
     private void initializedataMap() {
@@ -58,63 +75,113 @@ public class FinancialAndCapitalMarketsActivity extends AppCompatActivity {
         dataMap.put("pub_sec_suk_mas_isl_re_bil", "📊");
         dataMap.put("pub_sec_suk_mas_gov_inv_iss", "📉");
         dataMap.put("pub_sec_suk_gov_hou_suk", "📈");
-        dataMap.put("pri_sec_con_tot", "📊");
-        dataMap.put("pri_sec_suk_tot", "📊");
-        dataMap.put("tot", "📊");
+        dataMap.put("pub_sec_suk_gov_hou_suk", "📈");
+
+        // Rest of the dataMap initialization...
+
     }
 
     private void fetchData(String apiUrl) {
-        runnableThread = new FinancialAndCapitalMarketsActivity.RunnableThread(apiUrl);
-        new Thread(runnableThread).start();
-    }
+        executor.execute(() -> {
+            try {
+                URL url = new URL(apiUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Accept", "application/vnd.BNM.API.v1+json");
 
-
-    class RunnableThread implements Runnable
-    {
-        private String apiUrl;
-        public RunnableThread(String apiUrl)
-        {
-            this.apiUrl = apiUrl;
-        }
-        @Override
-        public void run() {
-            executor.execute(() -> {
-                System.out.println("Inside Fin Activity");
-                try {
-                    URL url = new URL(apiUrl);
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("GET");
-                    System.out.println("URL" + url);
-                    urlConnection.setRequestProperty("Accept", "application/vnd.BNM.API.v1+json");
-
-                    try {
-                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                        StringBuilder stringBuilder = new StringBuilder();
-                        String line;
-
-                        while ((line = bufferedReader.readLine()) != null) {
-                            stringBuilder.append(line).append("\n");
-                        }
-
-                        bufferedReader.close();
-                        String result = stringBuilder.toString();
-                        System.out.println(result);
-                        mainHandler.post(() -> {
-                            TextView tvResponse = findViewById(R.id.msbResponse);
-                        tvResponse.setText(result);
-
-                        });
-                    } finally {
-                        urlConnection.disconnect();
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
                     }
-                } catch (Exception e) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT);
-                    });
-                }
-            });
-        }
+                    reader.close();
 
+                    String formattedJson = formatJson(response.toString());
+
+                    mainHandler.post(() -> {
+                        TextView msbResponse = findViewById(R.id.msbResponse);
+                        msbResponse.setText(formattedJson);
+                    });
+                } else {
+                    mainHandler.post(() -> Toast.makeText(FinancialAndCapitalMarketsActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show());
+                }
+
+                connection.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+                mainHandler.post(() -> Toast.makeText(FinancialAndCapitalMarketsActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show());
+            }
+        });
     }
 
+    private String formatJson(String json) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONObject data = jsonObject.getJSONObject("data");
+            StringBuilder formattedJson = new StringBuilder();
+
+            Iterator<String> keys = data.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                String value = data.get(key).toString();
+                if (dataMap.containsKey(key)) {
+                    String icon = dataMap.get(key);
+                    formattedJson.append(key).append(icon).append(": ").append(value).append("\n");
+                } else {
+                    formattedJson.append(key).append(": ").append(value).append("\n");
+                }
+            }
+
+            return formattedJson.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+
+    class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+
+        private List<String> itemList;
+
+        public ItemAdapter(List<String> itemList) {
+            this.itemList = itemList;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view, parent, false);
+            return new ViewHolder(view);
+        }
+
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            String item = itemList.get(position);
+            holder.bind(item);
+        }
+
+        @Override
+        public int getItemCount() {
+            return itemList.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+
+            private TextView textView;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                textView = itemView.findViewById(R.id.textView);
+            }
+
+            public void bind(String item) {
+                textView.setText(item);
+            }
+        }
+    }
 }
