@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class BihHeatMapActivity extends AppCompatActivity {
+public class BihTradingActivities extends AppCompatActivity {
 
     private Map<String, String> iconMapping;
 
@@ -47,16 +47,7 @@ public class BihHeatMapActivity extends AppCompatActivity {
 
     private void initializeIconMapping() {
         iconMapping = new HashMap<>();
-        iconMapping.put("tra_date", "📅");
-        iconMapping.put("sto_code", "💻");
-        iconMapping.put("sto_desc", "📄");
-        iconMapping.put("issuer", "🏛️");
-        iconMapping.put("mat_date", "⌛");
-        iconMapping.put("las_trd_pri", "📈");
-        iconMapping.put("las_trd_yie", "📊");
-        iconMapping.put("low_yie", "📉");
-        iconMapping.put("high_yie", "📈");
-        iconMapping.put("vol", "📊");
+
     }
 
     private void fetchData(String apiUrl) {
@@ -108,12 +99,7 @@ public class BihHeatMapActivity extends AppCompatActivity {
             executor.execute(() -> {
                 try {
                     //to be commented
-                    mainHandler.post(() -> {
-                        TextView tvResponse = findViewById(R.id.tvHeatMapResponse);
-                        displayDataWithIcons(tvResponse, "");
-                        //tvResponse.setText(result);
 
-                    });
                     //comment this
 
                     URL url = new URL(apiUrl);
@@ -140,7 +126,7 @@ public class BihHeatMapActivity extends AppCompatActivity {
                         mainHandler.post(() -> {
                             //TextView tvResponse = findViewById(R.id.tvHeatMapResponse);
                             //displayDataWithIcons(tvResponse, result);
-                             //tvResponse.setText(result);
+                            //tvResponse.setText(result);
 
                         });
                     } finally {

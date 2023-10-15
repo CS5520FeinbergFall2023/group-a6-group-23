@@ -119,6 +119,17 @@ public class AtYourServiceActivity extends AppCompatActivity {
         btnTradingActivities.setId(View.generateViewId());
         btnTradingActivities.setText("Trading Activities");
 
+        btnTradingActivities.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                url = "https://api.bnm.gov.my/public/bih/trading-activities";
+                Intent intent = new Intent(AtYourServiceActivity.this, BihHeatMapActivity.class);
+                intent.putExtra("heatmap", url);
+                startActivity(intent);
+            }
+
+        });
+
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
