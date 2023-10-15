@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 
 public class AtYourServiceActivity extends AppCompatActivity {
 
-    private String[] dropDownContent = new String[]{"Islamic Interbank Money Market(IIMM)", "Kura's_choice",
+    private String[] dropDownContent = new String[]{"Islamic Interbank Money Market(IIMM)", "Financial and Capital Markets",
             "Bond Info Hub(BIH)", "Kota's Choice"};
     private ConstraintLayout constraintLayout;
 
@@ -55,6 +55,10 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
                 if("Bond Info Hub(BIH)".equals(selectedItem)) {
                     addButtonsBondInfoHub();
+                }
+                if("Financial and Capital Markets".equals(selectedItem)){
+                    Log.v("Saiteja Kura", "Here");
+                    addFinancialCapitalMarkets();
                 }
             }
         });
@@ -139,5 +143,32 @@ public class AtYourServiceActivity extends AppCompatActivity {
         constraintSet.connect(btnTradingActivities.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
         constraintSet.applyTo(constraintLayout);
 
+    }
+
+    private void addFinancialCapitalMarkets(){
+        Button msb = new Button(this);
+        msb.setId(View.generateViewId());
+        msb.setText("MSB");
+
+        msb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                url = "https://api.bnm.gov.my/public/msb/2.16";
+                Intent intent = new Intent(AtYourServiceActivity.this, FinancialAndCapitalMarketsActivity.class);
+                intent.putExtra("MSB", url);
+                startActivity(intent);
+            }
+        });
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        constraintLayout.addView(msb);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(msb.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        constraintSet.connect(msb.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(constraintLayout);
     }
 }
