@@ -60,7 +60,6 @@ public class AtYourServiceActivity extends AppCompatActivity {
                     addButtonsBondInfoHub();
                 }
                 if("Financial and Capital Markets".equals(selectedItem)){
-                    Log.v("Saiteja Kura", "Here");
                     addFinancialCapitalMarkets();
                 }
             }
@@ -190,6 +189,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 });
             }
         });
+    }
     private void addFinancialCapitalMarkets(){
         Button msb = new Button(this);
         msb.setId(View.generateViewId());
