@@ -7,10 +7,12 @@
     tools:context=".BihHeatMapActivity">
 
     <TextView
-        android:id="@+id/tvHeatMapResponse"
+        android:id="@+id/tvBihHeatMapResponse"
         android:layout_width="335dp"
         android:layout_height="574dp"
-        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

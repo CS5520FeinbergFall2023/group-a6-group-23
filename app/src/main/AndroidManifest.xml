@@ -19,7 +19,13 @@
             android:name=".SummaryTransactionActivity"
             android:exported="false" />
         <activity
+            android:name=".BihTradingActivities"
+            android:exported="false" />
+        <activity
             android:name=".BihHeatMapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FinancialAndCapitalMarketsActivity"
             android:exported="false" />
         <activity
             android:name=".BondInfoHub"

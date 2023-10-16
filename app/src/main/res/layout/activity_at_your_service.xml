@@ -28,12 +28,28 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="317dp"
+        android:layout_height="404dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" >
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="184dp"
+        android:layout_height="16dp"
+        android:indeterminate="true"
+        android:indeterminateBehavior="repeat"
+        android:pointerIcon="arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_wrapBehaviorInParent="included" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
