@@ -19,6 +19,9 @@
             android:name=".BihHeatMapActivity"
             android:exported="false" />
         <activity
+            android:name=".FinancialAndCapitalMarketsActivity"
+            android:exported="false" />
+        <activity
             android:name=".BondInfoHub"
             android:exported="false" />
         <activity
