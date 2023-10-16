@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/S3KB.iml" filepath="$PROJECT_DIR$/.idea/modules/S3KB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/S3KB.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/S3KB.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/S3KB.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/S3KB.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/S3KB.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/S3KB.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/S3KB.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/S3KB.app.unitTest.iml" />
+    </modules>
+  </component>
+</project>
