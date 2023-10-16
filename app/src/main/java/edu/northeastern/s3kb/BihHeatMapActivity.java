@@ -81,9 +81,10 @@ public class BihHeatMapActivity extends AppCompatActivity {
                 if (dataObject.has(key)) {
                     String value = dataObject.getString(key);
                     displayText.append("<b>").append(icon).append(" ").append(key).append(": </b>").append(value).append("<br>").append("<br>").append("<br>");
-                    textView.setText(Html.fromHtml(displayText.toString(), Html.FROM_HTML_MODE_COMPACT));
                 }
             }
+
+            textView.setText(Html.fromHtml(displayText.toString(), Html.FROM_HTML_MODE_COMPACT));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -123,8 +124,6 @@ public class BihHeatMapActivity extends AppCompatActivity {
                         mainHandler.post(() -> {
                             TextView tvResponse = findViewById(R.id.tvBihHeatMapResponse);
                             displayDataWithIcons(tvResponse, result);
-                            tvResponse.setText(result);
-
                         });
                     } finally {
                         urlConnection.disconnect();
