@@ -69,13 +69,25 @@ public class AtYourServiceActivity extends AppCompatActivity {
     }
 
     private void addIIMMButtons() {
+        constraintLayout.removeAllViews();
         Button button1 = new Button(this);
         button1.setId(View.generateViewId());
-        button1.setText("Button 1");
+        button1.setText("Summary Transaction");
         button1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         button1.setPadding(50, 50, 50, 50);
         button1.setBackgroundColor(0xFF673AB7);
         button1.setTextColor(Color.WHITE);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                url = "https://api.bnm.gov.my/public/iimm/summary-transaction";
+                Intent intent = new Intent(AtYourServiceActivity.this, SummaryTransactionActivity.class);
+                intent.putExtra("summary-transaction", url);
+                startActivity(intent);
+            }
+
+        });
 
         Button button2 = new Button(this);
         button2.setId(View.generateViewId());
@@ -107,6 +119,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
     }
 
     private void addButtonsBondInfoHub() {
+        constraintLayout.removeAllViews();
         Button btnHeatMap = new Button(this);
         btnHeatMap.setId(View.generateViewId());
         btnHeatMap.setText("HeatMap");
