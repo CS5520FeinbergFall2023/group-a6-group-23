@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,18 +38,33 @@ public class BihTradingActivities extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bih_heat_map);
+        setContentView(R.layout.activity_bih_trading_activities);
 
         Intent intent = getIntent();
-        String receivedValue = intent.getStringExtra("heatmap");
-
+        String receivedValue = intent.getStringExtra("trading");
+        TextView tvResponse = findViewById(R.id.tvBihTradingActivities);
         fetchData(receivedValue);
 
     }
 
-    private void initializeIconMapping() {
+    private void initializeiconMappingping() {
         iconMapping = new HashMap<>();
-
+        iconMapping.put("trd_date", "📅");
+        iconMapping.put("trd_time", "⌚");
+        iconMapping.put("instrument", "🎻");
+        iconMapping.put("stock_code", "🔢");
+        iconMapping.put("stock_desc", "📝");
+        iconMapping.put("stock_iss", "🏛️");
+        iconMapping.put("price", "💰");
+        iconMapping.put("yield", "📈");
+        iconMapping.put("stock_sname", "📚");
+        iconMapping.put("issue_date", "📅");
+        iconMapping.put("mat_date", "📅");
+        iconMapping.put("rem_tenure", "⏳");
+        iconMapping.put("coup_rate", "📈");
+        iconMapping.put("amount", "💲");
+        iconMapping.put("discount", "📉");
+        iconMapping.put("val_date", "📅");
     }
 
     private void fetchData(String apiUrl) {
@@ -56,35 +73,35 @@ public class BihTradingActivities extends AppCompatActivity {
     }
 
     private void displayDataWithIcons(TextView textView, String data) {
-        data = "{\"data\":{\"tra_date\":\"2023-10-13\",\"sto_code\":\"VK230364\",\"sto_desc\":\"PRESS METAL IMTN 4.450% 18.09.2030\",\"issuer\":\"PRESS METAL\",\"mat_date\":\"2030-09-18\",\"las_trd_pri\":\"100.020\",\"las_trd_yie\":\"4.450\",\"low_yie\":\"4.450\",\"high_yie\":\"4.450\",\"vol\":\"5.00000000000\"},\"meta\":{\"last_updated\":\"2023-10-13 20:38:32\",\"total_result\":1}}";
-        initializeIconMapping();
+        data = "{\"data\": [\n        {\n            \"trd_date\": \"2023-10-13\",\n            \"trd_time\": \"17:40:31\",\n            \"instrument\": \"MGS\",\n            \"stock_code\": \"MS120002\",\n            \"stock_desc\": \"MGS 2/2012 3.892% 15.03.2027\",\n            \"stock_iss\": \"GOVERNMENT\",\n            \"price\": \"100.49\",\n            \"yield\": \"3.73\",\n            \"stock_sname\": \"MS03/27\",\n            \"issue_date\": \"2012-03-15\",\n            \"mat_date\": \"2027-03-15\",\n            \"rem_tenure\": 1249,\n            \"coup_rate\": \"3.89\",\n            \"amount\": \"0.03\",\n            \"discount\": null,\n            \"val_date\": \"2023-10-17\"\n        },\n        {\n            \"trd_date\": \"2023-10-13\",\n            \"trd_time\": \"17:39:52\",\n            \"instrument\": \"IMTN\",\n            \"stock_code\": \"VI210052\",\n            \"stock_desc\": \"EWCSB IMTN 5.850% 24.03.2026 - Series 1 Tranche 1\",\n            \"stock_iss\": \"EWCSB\",\n            \"price\": \"100.97\",\n            \"yield\": \"5.42\",\n            \"stock_sname\": \"VI210052\",\n            \"issue_date\": \"2021-03-24\",\n            \"mat_date\": \"2026-03-24\",\n            \"rem_tenure\": 893,\n            \"coup_rate\": \"5.85\",\n            \"amount\": \"0.60\",\n            \"discount\": null,\n            \"val_date\": \"2023-10-17\"\n        }\n]}";
+
+        initializeiconMappingping();
         StringBuilder displayText = null;
         try {
-            JSONObject jsonData = new JSONObject(data);
-            JSONObject dataObject = jsonData.getJSONObject("data");
+            JSONObject jsonObject = new JSONObject(data);
+            JSONArray dataArray = jsonObject.getJSONArray("data");
+            int j = dataArray.length();
+            textView.setText("pqrs");
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject dataObject = dataArray.getJSONObject(i);
+                displayText = new StringBuilder();
 
-            displayText = new StringBuilder();
+                for (Map.Entry<String, String> entry : iconMapping.entrySet()) {
+                    String key = entry.getKey();
+                    String icon = entry.getValue();
 
-            for (Map.Entry<String, String> entry : iconMapping.entrySet()) {
-                String key = entry.getKey();
-                String icon = entry.getValue();
-
-                if (dataObject.has(key)) {
-                    String value = dataObject.getString(key);
-                    displayText.append("<b>").append(icon).append(" ").append(key).append(": </b>").append(value).append("<br>").append("<br>").append("<br>");
-                    String htmlText = "<html><head><style type='text/css'>body {line-height: 3.5;}</style></head><body>" +
-                            displayText.toString() + "</body></html>";
-                    textView.setText(Html.fromHtml(displayText.toString(), Html.FROM_HTML_MODE_COMPACT));
+                    if (dataObject.has(key)) {
+                        String value = "";
+                        value = dataObject.getString(key);
+                        displayText.append("<br>").append("<b>").append(icon).append(" ").append(key).append(": </b>").append(value).append("<br>").append("<br>").append("<br>");
+                    }
                 }
             }
-
-            //textView.setText(displayText.toString());
+            textView.setText(Html.fromHtml(displayText.toString(), Html.FROM_HTML_MODE_COMPACT));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        String something = displayText.toString();
-        //textView.setText(displayText.toString());
     }
 
     class RunnableThread implements Runnable
@@ -99,7 +116,12 @@ public class BihTradingActivities extends AppCompatActivity {
             executor.execute(() -> {
                 try {
                     //to be commented
+                    mainHandler.post(() -> {
+                       TextView tvResponse = findViewById(R.id.tvBihTradingActivities);
+                        //tvResponse.setText("hello");
+                        displayDataWithIcons( tvResponse,"");
 
+                    });
                     //comment this
 
                     URL url = new URL(apiUrl);
@@ -109,7 +131,6 @@ public class BihTradingActivities extends AppCompatActivity {
                     urlConnection.setRequestProperty("Accept", "application/vnd.BNM.API.v1+json");
 
                     try {
-                        //int responseCode = urlConnection.getResponseCode();
 
                         BufferedReader bufferedReader = new BufferedReader(
                                 new InputStreamReader(urlConnection.getInputStream()));
@@ -124,9 +145,8 @@ public class BihTradingActivities extends AppCompatActivity {
                         bufferedReader.close();
                         String result = stringBuilder.toString();
                         mainHandler.post(() -> {
-                            //TextView tvResponse = findViewById(R.id.tvHeatMapResponse);
+                            //TextView tvResponse = findViewById(R.id.tvBihTradingActivities);
                             //displayDataWithIcons(tvResponse, result);
-                            //tvResponse.setText(result);
 
                         });
                     } finally {

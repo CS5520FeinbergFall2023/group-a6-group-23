@@ -123,8 +123,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 url = "https://api.bnm.gov.my/public/bih/trading-activities";
-                Intent intent = new Intent(AtYourServiceActivity.this, BihHeatMapActivity.class);
-                intent.putExtra("heatmap", url);
+                Intent intent = new Intent(AtYourServiceActivity.this, BihTradingActivities.class);
+                intent.putExtra("trading", url);
                 startActivity(intent);
             }
 

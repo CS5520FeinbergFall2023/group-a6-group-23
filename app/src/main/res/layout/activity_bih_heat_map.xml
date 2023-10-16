@@ -7,7 +7,7 @@
     tools:context=".BihHeatMapActivity">
 
     <TextView
-        android:id="@+id/tvHeatMapResponse"
+        android:id="@+id/tvBihHeatMapResponse"
         android:layout_width="335dp"
         android:layout_height="574dp"
         android:textColor="@color/black"
