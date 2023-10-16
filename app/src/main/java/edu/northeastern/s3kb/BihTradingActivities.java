@@ -10,6 +10,7 @@ import android.text.Html;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class BihHeatMapActivity extends AppCompatActivity {
+public class BihTradingActivities extends AppCompatActivity {
 
     private Map<String, String> iconMapping;
 
@@ -36,27 +37,32 @@ public class BihHeatMapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bih_heat_map);
+        setContentView(R.layout.activity_bih_trading_activities);
 
         Intent intent = getIntent();
-        String receivedValue = intent.getStringExtra("heatmap");
-
+        String receivedValue = intent.getStringExtra("trading");
         fetchData(receivedValue);
 
     }
 
-    private void initializeIconMapping() {
+    private void initializeiconMappingping() {
         iconMapping = new HashMap<>();
-        iconMapping.put("tra_date", "📅");
-        iconMapping.put("sto_code", "💻");
-        iconMapping.put("sto_desc", "📄");
-        iconMapping.put("issuer", "🏛️");
-        iconMapping.put("mat_date", "⌛");
-        iconMapping.put("las_trd_pri", "📈");
-        iconMapping.put("las_trd_yie", "📊");
-        iconMapping.put("low_yie", "📉");
-        iconMapping.put("high_yie", "📈");
-        iconMapping.put("vol", "📊");
+        iconMapping.put("trd_date", "📅");
+        iconMapping.put("trd_time", "⌚");
+        iconMapping.put("instrument", "🎻");
+        iconMapping.put("stock_code", "🔢");
+        iconMapping.put("stock_desc", "📝");
+        iconMapping.put("stock_iss", "🏛️");
+        iconMapping.put("price", "💰");
+        iconMapping.put("yield", "📈");
+        iconMapping.put("stock_sname", "📚");
+        iconMapping.put("issue_date", "📅");
+        iconMapping.put("mat_date", "📅");
+        iconMapping.put("rem_tenure", "⏳");
+        iconMapping.put("coup_rate", "📈");
+        iconMapping.put("amount", "💲");
+        iconMapping.put("discount", "📉");
+        iconMapping.put("val_date", "📅");
     }
 
     private void fetchData(String apiUrl) {
@@ -65,30 +71,32 @@ public class BihHeatMapActivity extends AppCompatActivity {
     }
 
     private void displayDataWithIcons(TextView textView, String data) {
-
-        initializeIconMapping();
+        initializeiconMappingping();
         StringBuilder displayText = null;
         try {
-            JSONObject jsonData = new JSONObject(data);
-            JSONObject dataObject = jsonData.getJSONObject("data");
+            JSONObject jsonObject = new JSONObject(data);
+            JSONArray dataArray = jsonObject.getJSONArray("data");
+            int j = dataArray.length();
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject dataObject = dataArray.getJSONObject(i);
+                displayText = new StringBuilder();
 
-            displayText = new StringBuilder();
+                for (Map.Entry<String, String> entry : iconMapping.entrySet()) {
+                    String key = entry.getKey();
+                    String icon = entry.getValue();
 
-            for (Map.Entry<String, String> entry : iconMapping.entrySet()) {
-                String key = entry.getKey();
-                String icon = entry.getValue();
-
-                if (dataObject.has(key)) {
-                    String value = dataObject.getString(key);
-                    displayText.append("<b>").append(icon).append(" ").append(key).append(": </b>").append(value).append("<br>").append("<br>").append("<br>");
+                    if (dataObject.has(key)) {
+                        String value = "";
+                        value = dataObject.getString(key);
+                        displayText.append("<br>").append("<b>").append(icon).append(" ").append(key).append(": </b>").append(value).append("<br>").append("<br>").append("<br>");
+                    }
                 }
             }
-
             textView.setText(Html.fromHtml(displayText.toString(), Html.FROM_HTML_MODE_COMPACT));
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
     class RunnableThread implements Runnable
@@ -109,6 +117,7 @@ public class BihHeatMapActivity extends AppCompatActivity {
                     urlConnection.setRequestProperty("Accept", "application/vnd.BNM.API.v1+json");
 
                     try {
+
                         BufferedReader bufferedReader = new BufferedReader(
                                 new InputStreamReader(urlConnection.getInputStream()));
 
@@ -122,8 +131,9 @@ public class BihHeatMapActivity extends AppCompatActivity {
                         bufferedReader.close();
                         String result = stringBuilder.toString();
                         mainHandler.post(() -> {
-                            TextView tvResponse = findViewById(R.id.tvBihHeatMapResponse);
+                            TextView tvResponse = findViewById(R.id.tvBihTradingActivities);
                             displayDataWithIcons(tvResponse, result);
+
                         });
                     } finally {
                         urlConnection.disconnect();

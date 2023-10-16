@@ -16,6 +16,12 @@
         android:theme="@style/Theme.S3KB"
         tools:targetApi="31">
         <activity
+            android:name=".ServiceAsyncTask"
+            android:exported="false" />
+        <activity
+            android:name=".BihTradingActivities"
+            android:exported="false" />
+        <activity
             android:name=".BihHeatMapActivity"
             android:exported="false" />
         <activity
@@ -26,8 +32,8 @@
             android:exported="false" />
         <activity
             android:name=".AtYourServiceActivity"
-            android:networkSecurityConfig="@xml/netwok_security_config"
-            android:exported="false" />
+            android:exported="false"
+            android:networkSecurityConfig="@xml/netwok_security_config" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

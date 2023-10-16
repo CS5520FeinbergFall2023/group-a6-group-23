@@ -3,20 +3,19 @@ package edu.northeastern.s3kb;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -31,6 +30,8 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
     private Executor executor = Executors.newSingleThreadExecutor();
 
+    private ProgressBar progressBar;
+
     private Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private String url;
@@ -44,12 +45,14 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
         constraintLayout = findViewById(R.id.constraintLayout);
 
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+
         text.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedItem = adapterView.getItemAtPosition(i).toString();
                 if("Islamic Interbank Money Market(IIMM)".equals(selectedItem)) {
-                    Log.v("Kaushik", "Here");
                     addIIMMButtons();
                 }
 
@@ -112,9 +115,7 @@ public class AtYourServiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 url = "https://api.bnm.gov.my/public/bih/heatmap";
-                Intent intent = new Intent(AtYourServiceActivity.this, BihHeatMapActivity.class);
-                intent.putExtra("heatmap", url);
-                startActivity(intent);
+                makeAPICallWithLoadingIndicator(url, BihHeatMapActivity.class, "heatmap");
             }
 
         });
@@ -122,6 +123,15 @@ public class AtYourServiceActivity extends AppCompatActivity {
         Button btnTradingActivities = new Button(this);
         btnTradingActivities.setId(View.generateViewId());
         btnTradingActivities.setText("Trading Activities");
+
+        btnTradingActivities.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                url = "https://api.bnm.gov.my/public/bih/trading-activities";
+                makeAPICallWithLoadingIndicator(url, BihTradingActivities.class, "trading");
+            }
+
+        });
 
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
@@ -145,6 +155,28 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
     }
 
+    private void makeAPICallWithLoadingIndicator(String url, Class<?> targetActivity, String intentExtra) {
+        progressBar.setVisibility(View.VISIBLE);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+
+                        Intent intent = new Intent(AtYourServiceActivity.this, targetActivity);
+                        intent.putExtra(intentExtra, url);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
     private void addFinancialCapitalMarkets(){
         Button msb = new Button(this);
         msb.setId(View.generateViewId());
