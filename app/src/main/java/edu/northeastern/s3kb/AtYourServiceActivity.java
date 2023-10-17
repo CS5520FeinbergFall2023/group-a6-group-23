@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 public class AtYourServiceActivity extends AppCompatActivity {
 
     private String[] dropDownContent = new String[]{"Islamic Interbank Money Market(IIMM)", "Financial and Capital Markets",
-            "Bond Info Hub(BIH)", "Kota's Choice"};
+            "Bond Info Hub(BIH)", "Financial Inclusion"};
     private ConstraintLayout constraintLayout;
 
     private String selectedItem;
@@ -61,6 +61,9 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 }
                 if("Financial and Capital Markets".equals(selectedItem)){
                     addFinancialCapitalMarkets();
+                }
+                if("Financial Inclusion".equals(selectedItem)){
+                    addFinancialInclusion();
                 }
             }
         });
@@ -215,5 +218,41 @@ public class AtYourServiceActivity extends AppCompatActivity {
         constraintSet.connect(msb.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
         constraintSet.connect(msb.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
+    }
+
+    private void addFinancialInclusion(){
+        constraintLayout.removeAllViews();
+        Button finInc = new Button(this);
+        finInc.setId(View.generateViewId());
+        finInc.setText("Financial Inclusion");
+        finInc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        finInc.setPadding(50, 50, 50, 50);
+        finInc.setBackgroundColor(0xFF673AB7);
+        finInc.setTextColor(Color.WHITE);
+
+        finInc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                url = "https://api.bnm.gov.my/public/financial_inclusion/1.11";
+                Intent intent = new Intent(AtYourServiceActivity.this, FinancialInclusionActivity.class);
+                intent.putExtra("FI", url);
+                startActivity(intent);
+            }
+        });
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        constraintLayout.addView(finInc);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(finInc.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(finInc.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+        constraintSet.connect(finInc.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+        constraintSet.connect(finInc.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+
+        constraintSet.applyTo(constraintLayout);
+
     }
 }
