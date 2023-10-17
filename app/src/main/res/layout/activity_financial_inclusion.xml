@@ -8,21 +8,22 @@
 
     <TextView
         android:id="@+id/FiResponse"
-        android:layout_width="335dp"
-        android:layout_height="338dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="68dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewFI"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerViewFI"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewFI"
-        android:layout_width="349dp"
-        android:layout_height="716dp"
-        android:layout_marginEnd="32dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
