@@ -49,11 +49,8 @@ public class SummaryTransactionActivity extends AppCompatActivity implements Dat
         int size = itemList == null ? 0 : itemList.size();
         outState.putInt(NUMBER_OF_ITEMS, size);
         for (int i = 0; i < size; i++) {
-            // put image information id into instance
             outState.putInt(KEY_OF_INSTANCE + i + "0", itemList.get(i).getImageSource());
-            // put itemName information into instance
             outState.putString(KEY_OF_INSTANCE + i + "1", itemList.get(i).getItemName());
-            // put itemDesc information into instance
             outState.putString(KEY_OF_INSTANCE + i + "2", itemList.get(i).getItemDesc());
         }
         super.onSaveInstanceState(outState);
