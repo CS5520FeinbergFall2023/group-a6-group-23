@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 public class AtYourServiceActivity extends AppCompatActivity {
 
     private String[] dropDownContent = new String[]{"Islamic Interbank Money Market(IIMM)", "Financial and Capital Markets",
-            "Bond Info Hub(BIH)", "Financial Inclusion"};
+            "Bond Info Hub(BIH)", "Kota's Choice"};
     private ConstraintLayout constraintLayout;
 
     private String selectedItem;
@@ -84,20 +84,29 @@ public class AtYourServiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 url = "https://api.bnm.gov.my/public/iimm/summary-transaction";
-                Intent intent = new Intent(AtYourServiceActivity.this, SummaryTransactionActivity.class);
-                intent.putExtra("summary-transaction", url);
-                startActivity(intent);
+                makeAPICallWithLoadingIndicator(url, SummaryTransactionActivity.class, "summary-transaction");
             }
 
         });
 
         Button button2 = new Button(this);
         button2.setId(View.generateViewId());
-        button2.setText("Button 2");
+        button2.setText("Interbank Transactions");
         button2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         button2.setPadding(50, 50, 50, 50);
         button2.setBackgroundColor(0xFF673AB7);
         button2.setTextColor(Color.WHITE);
+
+
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                url = "https://api.bnm.gov.my/public/iimm/interbank-transactions";
+                makeAPICallWithLoadingIndicator(url, InterbankTransactionActivity.class, "summary-transaction");
+            }
+
+        });
 
         constraintLayout.addView(button1);
 
@@ -125,6 +134,10 @@ public class AtYourServiceActivity extends AppCompatActivity {
         Button btnHeatMap = new Button(this);
         btnHeatMap.setId(View.generateViewId());
         btnHeatMap.setText("HeatMap");
+        btnHeatMap.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        btnHeatMap.setPadding(50, 50, 50, 50);
+        btnHeatMap.setBackgroundColor(0xFF673AB7);
+        btnHeatMap.setTextColor(Color.WHITE);
 
         btnHeatMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +151,10 @@ public class AtYourServiceActivity extends AppCompatActivity {
         Button btnTradingActivities = new Button(this);
         btnTradingActivities.setId(View.generateViewId());
         btnTradingActivities.setText("Trading Activities");
+        btnTradingActivities.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        btnTradingActivities.setPadding(50, 50, 50, 50);
+        btnTradingActivities.setBackgroundColor(0xFF673AB7);
+        btnTradingActivities.setTextColor(Color.WHITE);
 
         btnTradingActivities.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,24 +165,24 @@ public class AtYourServiceActivity extends AppCompatActivity {
 
         });
 
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-        );
 
         constraintLayout.addView(btnHeatMap);
 
 
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
-
-        constraintSet.connect(btnHeatMap.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        constraintSet.connect(btnHeatMap.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
-
+        constraintSet.connect(btnHeatMap.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(btnHeatMap.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+        constraintSet.connect(btnHeatMap.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+        constraintSet.applyTo(constraintLayout);
         constraintLayout.addView(btnTradingActivities);
         constraintSet.clone(constraintLayout);
-        constraintSet.connect(btnTradingActivities.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
-        constraintSet.connect(btnTradingActivities.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        constraintSet.connect(btnHeatMap.getId(), ConstraintSet.BOTTOM, btnTradingActivities.getId(), ConstraintSet.TOP);
+        constraintSet.applyTo(constraintLayout);
+        constraintSet.connect(btnTradingActivities.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(btnTradingActivities.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+        constraintSet.connect(btnTradingActivities.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+        constraintSet.connect(btnTradingActivities.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
 
     }
@@ -194,29 +211,33 @@ public class AtYourServiceActivity extends AppCompatActivity {
         });
     }
     private void addFinancialCapitalMarkets(){
+        constraintLayout.removeAllViews();
         Button msb = new Button(this);
         msb.setId(View.generateViewId());
         msb.setText("MSB");
+        msb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        msb.setPadding(50, 50, 50, 50);
+        msb.setBackgroundColor(0xFF673AB7);
+        msb.setTextColor(Color.WHITE);
 
         msb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 url = "https://api.bnm.gov.my/public/msb/2.16";
-                Intent intent = new Intent(AtYourServiceActivity.this, FinancialAndCapitalMarketsActivity.class);
-                intent.putExtra("MSB", url);
-                startActivity(intent);
+                makeAPICallWithLoadingIndicator(url, FinancialAndCapitalMarketsActivity.class, "MSB");
             }
         });
 
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-        );
+
         constraintLayout.addView(msb);
+
+
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
-        constraintSet.connect(msb.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        constraintSet.connect(msb.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
+        constraintSet.connect(msb.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(msb.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
+        constraintSet.connect(msb.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
+        constraintSet.connect(msb.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
     }
 
