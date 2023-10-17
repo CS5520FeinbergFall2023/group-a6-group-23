@@ -19,6 +19,9 @@
             android:name=".InterbankTransactionActivity"
             android:exported="false" />
         <activity
+            android:name=".FinancialInclusionActivity"
+            android:exported="false" />
+         <activity
             android:name=".SummaryTransactionActivity"
             android:exported="false" />
         <activity
@@ -29,9 +32,6 @@
             android:exported="false" />
         <activity
             android:name=".FinancialAndCapitalMarketsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BondInfoHub"
             android:exported="false" />
         <activity
             android:name=".AtYourServiceActivity"

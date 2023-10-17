@@ -62,6 +62,9 @@ public class AtYourServiceActivity extends AppCompatActivity {
                 if("Financial and Capital Markets".equals(selectedItem)){
                     addFinancialCapitalMarkets();
                 }
+                if("Financial Inclusion".equals(selectedItem)){
+                    addFinancialInclusion();
+                }
             }
         });
 
@@ -235,6 +238,33 @@ public class AtYourServiceActivity extends AppCompatActivity {
         constraintSet.connect(msb.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT);
         constraintSet.connect(msb.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT);
         constraintSet.connect(msb.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(constraintLayout);
+    }
+
+    private void addFinancialInclusion(){
+        Button finInc = new Button(this);
+        finInc.setId(View.generateViewId());
+        finInc.setText("FI");
+
+        finInc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                url = "https://api.bnm.gov.my/public/financial_inclusion/1.11";
+                Intent intent = new Intent(AtYourServiceActivity.this, FinancialInclusionActivity.class);
+                intent.putExtra("FI", url);
+                startActivity(intent);
+            }
+        });
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+        constraintLayout.addView(finInc);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(finInc.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        constraintSet.connect(finInc.getId(), ConstraintSet.TOP, R.id.textInputLayout2, ConstraintSet.BOTTOM);
         constraintSet.applyTo(constraintLayout);
     }
 }
