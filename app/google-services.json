@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "126336656268",
+    "firebase_url": "https://s3kb-b07f0-default-rtdb.firebaseio.com",
+    "project_id": "s3kb-b07f0",
+    "storage_bucket": "s3kb-b07f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126336656268:android:7a9af257842b6c96ae2ca9",
+        "android_client_info": {
+          "package_name": "edu.northeastern.s3kb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtBLCPnQuiZR8kYTXrcWNKmegpxDH2zvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
