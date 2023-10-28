@@ -16,12 +16,15 @@
         android:theme="@style/Theme.S3KB"
         tools:targetApi="31">
         <activity
+            android:name=".FirebaseSetup"
+            android:exported="false" />
+        <activity
             android:name=".InterbankTransactionActivity"
             android:exported="false" />
         <activity
             android:name=".FinancialInclusionActivity"
             android:exported="false" />
-         <activity
+        <activity
             android:name=".SummaryTransactionActivity"
             android:exported="false" />
         <activity
