@@ -56,6 +56,8 @@ public class StickItToEm extends AppCompatActivity {
     private RecyclerView.LayoutManager recycleLayoutManager;
     private StickerAdapter stickerAdapter;
 
+    private NotificationManager notificationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,11 @@ public class StickItToEm extends AppCompatActivity {
         stickerRecyclerView.setLayoutManager(recycleLayoutManager);
         usernameSelector = findViewById(R.id.usernameList);
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        // Set the notification channel and build the notification
+        notificationManager = getSystemService(NotificationManager.class);
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+        notificationChannel.setDescription(CHANNEL_DESCRIPTION);
+        notificationManager.createNotificationChannel(notificationChannel);
         databaseReference.child("users").get().addOnCompleteListener((task) -> {
             usersMap = (Map) task.getResult().getValue();
             List<String> userData = new ArrayList<>();
@@ -98,6 +105,7 @@ public class StickItToEm extends AppCompatActivity {
                 if("Recipient's Username for sticker".equals(to)){
                     Toast.makeText(StickItToEm.this, "Select Username of recipient", Toast.LENGTH_SHORT).show();
                 } else {
+                    Log.d("StickItToEm", "before Sending notification for sticker: " + "hi");
                     Sticker sticker = new Sticker(position, myUsername, to, LocalDateTime.now().toString());
                     String id = String.valueOf(LocalDateTime.parse(sticker.getSendTime()).atZone(ZoneId.systemDefault()).toEpochSecond());
                     Thread wt = new Thread(new WorkThread(id, sticker));
@@ -119,7 +127,7 @@ public class StickItToEm extends AppCompatActivity {
                 for (DataSnapshot stickerSnapshot : dataSnapshot.getChildren()) {
                     Sticker sticker = stickerSnapshot.getValue(Sticker.class);
                     if (sticker.getTo().equals(myUsername) && LocalDateTime.parse(sticker.getSendTime()).compareTo(lastVisited) > 0) {
-//                        sendNotification(sticker);
+                        sendNotification(sticker);
                     }
                 }
                 databaseReference.child("users").child(myUsername).setValue(new User(myUsername, LocalDateTime.now().toString()));
@@ -144,6 +152,7 @@ public class StickItToEm extends AppCompatActivity {
                 R.drawable.thor_sticker};
         // Create the notification builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(android.R.drawable.ic_notification_overlay)
                 .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(BitmapFactory.decodeResource(getResources(),
                         sticker.getImageId() < 4 ? data[sticker.getImageId()] : R.drawable.captainamerica_sticker)).bigLargeIcon(BitmapFactory.decodeResource(getResources(),
                         sticker.getImageId() < 4 ? data[sticker.getImageId()] : R.drawable.captainamerica_sticker)))
@@ -151,12 +160,8 @@ public class StickItToEm extends AppCompatActivity {
                 .setContentText("imageId=" + sticker.getImageId())
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
-        // Set the notification channel and build the notification
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
-        notificationChannel.setDescription(CHANNEL_DESCRIPTION);
-        notificationManager.createNotificationChannel(notificationChannel);
         notificationManager.notify(0, builder.build());
+        Log.d("StickItToEm", "Sent notification for sticker: " + sticker);
     }
 
     class WorkThread implements Runnable {
