@@ -3,6 +3,8 @@ package edu.northeastern.s3kb;
 import static android.app.PendingIntent.getActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +12,21 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.StickerViewHolder> {
     private List<String> stickerIdentifiers;
-
     private Context context;
-    public StickerAdapter(Context context, List<String> stickerIdentifiers) {
+
+    private String userName;
+
+    public StickerAdapter(Context context, List<String> stickerIdentifiers, String userName) {
         this.context = context;
         this.stickerIdentifiers = stickerIdentifiers;
+        this.userName = userName;
     }
 
     @NonNull
@@ -43,7 +49,6 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.StickerV
 
     public class StickerViewHolder extends RecyclerView.ViewHolder {
         private ImageView stickerImageView;
-
         public StickerViewHolder(@NonNull View itemView) {
             super(itemView);
             stickerImageView = itemView.findViewById(R.id.stickerImageView);
@@ -57,8 +62,8 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.StickerV
         }
 
         public void bindSticker(String stickerIdentifier) {
-            // Load and set the sticker image based on the identifier
-            int drawableId = itemView.getResources().getIdentifier(stickerIdentifier, "drawable", itemView.getContext().getPackageName());
+            int drawableId = itemView.getResources().getIdentifier(stickerIdentifier,
+                    "drawable", itemView.getContext().getPackageName());
             if (drawableId != 0) {
                 stickerImageView.setImageResource(drawableId);
             }
@@ -69,4 +74,6 @@ public class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.StickerV
         String displayToast = "This was clicked: " + stickerIdentifier;
         Toast.makeText(context, displayToast, Toast.LENGTH_SHORT).show();
     }
+
+
 }

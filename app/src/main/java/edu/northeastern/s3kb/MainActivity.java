@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // About Me Button
         Button mButton = findViewById(R.id.a6_at_your_service);
         mButton.setOnClickListener(this);
         // firebase_realtime_database Button
@@ -23,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fButton.setOnClickListener(this);
         FirebaseApp.initializeApp(this);
 
+        Button aboutMe = findViewById(R.id.btnAbout);
+        aboutMe.setOnClickListener(this);
     }
 
     @Override
@@ -35,5 +36,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, LoginA8Activity.class);
             startActivity(intent);
         }
+
+        if(view.getId() == R.id.btnAbout){
+            Intent intent = new Intent(this, AboutMeActivity.class);
+            startActivity(intent);
+        }
+
     }
 }
