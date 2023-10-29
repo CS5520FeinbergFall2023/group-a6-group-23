@@ -3,43 +3,34 @@ package edu.northeastern.s3kb;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class User {
+    private String username;
+    private String lastVisited;
 
-    private final String userName;
-    private final String UID;
-
-    private List<String> stickerSent = new ArrayList<>();
-
-    private List<String> stickerReceived = new ArrayList<>();
-
-    public User(String userName) {
-        this.userName = userName;
-        this.UID = UUID.randomUUID().toString();
-    }
-    public String getUserName() {
-        return userName;
+    public User(String username, String lastVisited) {
+        this.username = username;
+        this.lastVisited = lastVisited;
     }
 
-    public String getUID() {
-        return UID;
+    public String getUsername() {
+        return username;
     }
 
-    public List<String> getStickerSent()
-    {
-        return stickerSent;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setStickerSent(String stickerName)
-    {
-        stickerSent.add(stickerName);
+    public String getLastVisited() {
+        return lastVisited;
     }
 
+    public void setLastVisited(String lastVisited) {
+        this.lastVisited = lastVisited;
+    }
 }
 
