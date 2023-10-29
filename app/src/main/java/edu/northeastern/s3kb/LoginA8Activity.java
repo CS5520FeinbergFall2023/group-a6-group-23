@@ -17,12 +17,8 @@ public class LoginA8Activity extends AppCompatActivity {
 
     DatabaseReference databaseReference;
 
-    User user;
-
     private EditText userNameEdt;
-    String userKey;
-
-    private Button loginBtn;
+     private Button loginBtn;
     private static String TAG = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +35,7 @@ public class LoginA8Activity extends AppCompatActivity {
 
                 String userName = userNameEdt.getText().toString();
                 Intent clickIntent = new Intent(LoginA8Activity.this, StickItToEm.class);
-                clickIntent.putExtra("currentUserName", userName);
-                clickIntent.putExtra("userKey", userKey);
+                clickIntent.putExtra("userName", userName);
                 startActivity(clickIntent);
             }
 
