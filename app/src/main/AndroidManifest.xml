@@ -22,6 +22,15 @@
             android:name=".LoginA8Activity"
             android:exported="false" />
         <activity
+            android:name=".ReviewStickersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StickerExchangeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".FirebaseSetup"
             android:exported="false" />
         <activity

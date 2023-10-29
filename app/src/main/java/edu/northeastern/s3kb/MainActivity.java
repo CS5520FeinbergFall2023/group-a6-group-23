@@ -32,8 +32,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
         if (view.getId() == R.id.firebase_realtime_database) {
-            Intent intent = new Intent(this, LoginA8Activity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
     }
+
+
 }
