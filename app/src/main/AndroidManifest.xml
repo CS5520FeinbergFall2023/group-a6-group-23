@@ -18,6 +18,9 @@
         android:theme="@style/Theme.S3KB"
         tools:targetApi="31">
         <activity
+            android:name=".StickersHistory"
+            android:exported="false" />
+        <activity
             android:name=".StickItToEm"
             android:exported="false" />
         <activity

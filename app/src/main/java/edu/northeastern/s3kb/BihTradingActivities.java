@@ -33,7 +33,6 @@ public class BihTradingActivities extends AppCompatActivity {
 
     private Handler mainHandler = new Handler(Looper.getMainLooper());
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

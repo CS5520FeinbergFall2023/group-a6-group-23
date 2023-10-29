@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -15,6 +16,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -56,18 +59,34 @@ public class StickItToEm extends AppCompatActivity {
     private RecyclerView.LayoutManager recycleLayoutManager;
     private StickerAdapter stickerAdapter;
 
+    private Button btnHistory;
+
+    private User userToSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stick_it_to_em);
 
+        Intent intent = getIntent();
+        String userName = intent.getStringExtra("userName");
+
         recycleLayoutManager = new LinearLayoutManager(this);
         stickerRecyclerView = findViewById(R.id.recycleViewStickers);
         stickerRecyclerView.setHasFixedSize(true);
-        stickerAdapter = new StickerAdapter(this, stickerIdentifiers);
+        stickerAdapter = new StickerAdapter(this, stickerIdentifiers, userName);
         stickerRecyclerView.setAdapter(stickerAdapter);
         stickerRecyclerView.setLayoutManager(recycleLayoutManager);
+        btnHistory = findViewById(R.id.btnHistory);
+
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent clickIntent = new Intent(StickItToEm.this, StickersHistory.class);
+                clickIntent.putExtra("user", userName);
+                startActivity(clickIntent);
+            }
+        });
         usernameSelector = findViewById(R.id.usernameList);
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("users").get().addOnCompleteListener((task) -> {
@@ -81,7 +100,6 @@ public class StickItToEm extends AppCompatActivity {
             ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, userData);
             usernameSelector.setAdapter(adapter);
         });
-        Intent intent = getIntent();
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -157,6 +175,7 @@ public class StickItToEm extends AppCompatActivity {
         notificationChannel.setDescription(CHANNEL_DESCRIPTION);
         notificationManager.createNotificationChannel(notificationChannel);
         notificationManager.notify(0, builder.build());
+
     }
 
     class WorkThread implements Runnable {
