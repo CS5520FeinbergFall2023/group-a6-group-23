@@ -18,7 +18,6 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -69,7 +68,7 @@ public class StickItToEm extends AppCompatActivity {
         setContentView(R.layout.activity_stick_it_to_em);
 
         Intent intent = getIntent();
-        String userName = intent.getStringExtra("userName");
+        String userName = intent.getStringExtra("currentUserName");
 
         recycleLayoutManager = new LinearLayoutManager(this);
         stickerRecyclerView = findViewById(R.id.recycleViewStickers);
@@ -132,7 +131,6 @@ public class StickItToEm extends AppCompatActivity {
                 // load current logged in username from global data store
                 myUsername = intent.getStringExtra("currentUserName");
                 lastVisited = LocalDateTime.parse(intent.getStringExtra("lastVisited"));
-                Log.v("Kaushik",lastVisited+"");
 
                 for (DataSnapshot stickerSnapshot : dataSnapshot.getChildren()) {
                     Sticker sticker = stickerSnapshot.getValue(Sticker.class);
