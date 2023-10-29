@@ -20,12 +20,13 @@ import java.util.List;
 public class StickerAdapter extends RecyclerView.Adapter<StickerAdapter.StickerViewHolder> {
     private List<String> stickerIdentifiers;
     private Context context;
-    private User user;
+
+    private String userName;
 
     public StickerAdapter(Context context, List<String> stickerIdentifiers, String userName) {
         this.context = context;
         this.stickerIdentifiers = stickerIdentifiers;
-        this.user = new User(userName);
+        this.userName = userName;
     }
 
     @NonNull

@@ -1,6 +1,9 @@
 package edu.northeastern.s3kb;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,6 +77,16 @@ public class StickItToEm extends AppCompatActivity {
         stickerAdapter = new StickerAdapter(this, stickerIdentifiers, userName);
         stickerRecyclerView.setAdapter(stickerAdapter);
         stickerRecyclerView.setLayoutManager(recycleLayoutManager);
+        btnHistory = findViewById(R.id.btnHistory);
+
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent clickIntent = new Intent(StickItToEm.this, StickersHistory.class);
+                clickIntent.putExtra("user", userName);
+                startActivity(clickIntent);
+            }
+        });
         usernameSelector = findViewById(R.id.usernameList);
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("users").get().addOnCompleteListener((task) -> {
@@ -87,7 +100,6 @@ public class StickItToEm extends AppCompatActivity {
             ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, userData);
             usernameSelector.setAdapter(adapter);
         });
-        Intent intent = getIntent();
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -163,16 +175,7 @@ public class StickItToEm extends AppCompatActivity {
         notificationChannel.setDescription(CHANNEL_DESCRIPTION);
         notificationManager.createNotificationChannel(notificationChannel);
         notificationManager.notify(0, builder.build());
-        btnHistory = findViewById(R.id.btnHistory);
 
-        btnHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent clickIntent = new Intent(StickItToEm.this, StickersHistory.class);
-                clickIntent.putExtra("user", userName);
-                startActivity(clickIntent);
-            }
-        });
     }
 
     class WorkThread implements Runnable {
