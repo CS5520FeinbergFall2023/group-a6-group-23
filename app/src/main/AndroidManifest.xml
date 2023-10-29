@@ -16,6 +16,12 @@
         android:theme="@style/Theme.S3KB"
         tools:targetApi="31">
         <activity
+            android:name=".StickItToEm"
+            android:exported="false" />
+        <activity
+            android:name=".LoginA8Activity"
+            android:exported="false" />
+        <activity
             android:name=".FirebaseSetup"
             android:exported="false" />
         <activity
