@@ -40,8 +40,6 @@ public class InterbankTransactionActivity extends AppCompatActivity implements D
         setContentView(R.layout.activity_interbank_transaction);
         init(savedInstanceState);
     }
-
-
     // Handling Orientation Changes on Android
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -55,7 +53,6 @@ public class InterbankTransactionActivity extends AppCompatActivity implements D
             outState.putString(KEY_OF_INSTANCE + i + "2", itemList.get(i).getItemDesc());
         }
         super.onSaveInstanceState(outState);
-
     }
 
     private void init(Bundle savedInstanceState) {
