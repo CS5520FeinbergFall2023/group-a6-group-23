@@ -8,10 +8,42 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleViewStickers"
-        android:layout_width="361dp"
-        android:layout_height="522dp"
+        android:layout_width="423dp"
+        android:layout_height="481dp"
+        app:layout_constraintBottom_toTopOf="@+id/Review_Stickers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameList" />
+
+    <Button
+        android:id="@+id/Review_Stickers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Review My Stickers"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.534"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycleViewStickers" />
+
+    <Spinner
+        android:id="@+id/usernameList"
+        android:layout_width="402dp"
+        android:layout_height="53dp"
+        android:contentDescription="firebase_database"
+        app:layout_constraintBottom_toTopOf="@+id/recycleViewStickers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Swipe Left/Right to send stickers, by selecting sender's name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
