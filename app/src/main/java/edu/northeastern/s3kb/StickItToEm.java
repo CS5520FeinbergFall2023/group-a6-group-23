@@ -51,7 +51,7 @@ public class StickItToEm extends AppCompatActivity {
     private Map<String, Map<String, String>> usersMap = new HashMap<>();
     private DatabaseReference databaseReference;
     List<String> stickerIdentifiers = Arrays.asList("captainamerica_sticker", "drstrange_sticker", "spiderman_sticker",
-            "thor_sticker");
+            "thor_sticker", "deadpool_sticker");
 
     private RecyclerView stickerRecyclerView;
 
