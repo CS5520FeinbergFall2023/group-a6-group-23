@@ -98,7 +98,7 @@ public class StickItToEm extends AppCompatActivity {
             List<String> userData = new ArrayList<>();
             userData.add("Recipient's Username for sticker");
             userData.addAll(usersMap.keySet());
-            if(usersMap.containsKey(myUsername)) {
+            if(usersMap.keySet().contains(myUsername)) {
                 userData.remove(userData.indexOf(myUsername));
             }
             ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, userData);
