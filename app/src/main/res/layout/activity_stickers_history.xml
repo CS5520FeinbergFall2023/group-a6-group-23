@@ -8,14 +8,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleViewStickersHistory"
-        android:layout_width="361dp"
-        android:layout_height="522dp"
+        android:layout_width="wrap_content"
+        android:layout_height="481dp"
         app:layout_constraintBottom_toTopOf="@+id/tvCount"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.32"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.449" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvCount"
