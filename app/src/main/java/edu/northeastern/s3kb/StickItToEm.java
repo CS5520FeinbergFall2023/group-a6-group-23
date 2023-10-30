@@ -120,7 +120,6 @@ public class StickItToEm extends AppCompatActivity {
                 if("Recipient's Username for sticker".equals(to)){
                     Toast.makeText(StickItToEm.this, "Select Username of recipient", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d("StickItToEm", "before Sending notification for sticker: " + "hi");
                     Sticker sticker = new Sticker(position, myUsername, to, LocalDateTime.now().toString());
                     String id = String.valueOf(LocalDateTime.parse(sticker.getSendTime()).atZone(ZoneId.systemDefault()).toEpochSecond());
                     Thread wt = new Thread(new WorkThread(id, sticker));

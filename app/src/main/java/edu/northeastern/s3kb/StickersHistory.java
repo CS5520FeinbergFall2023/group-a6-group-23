@@ -40,13 +40,15 @@ public class StickersHistory extends AppCompatActivity {
 
         TextView tvCount = findViewById(R.id.tvCount);
 
+        tvCount.setText("Count of Stickers: 0" );
+
         recycleLayoutManager = new LinearLayoutManager(this);
         stickerRecyclerView = findViewById(R.id.recycleViewStickersHistory);
         stickerRecyclerView.setHasFixedSize(true);
 
         //can remove this used for testing
         String[] stickerData = {"captainamerica_sticker", "drstrange_sticker", "spiderman_sticker",
-                "thor_sticker"};
+                "thor_sticker", "deadpool_sticker"};
         databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("stickers").get().addOnCompleteListener((task) -> {
             usersMap = (Map) task.getResult().getValue();
