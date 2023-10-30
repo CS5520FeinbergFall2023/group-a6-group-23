@@ -162,13 +162,13 @@ public class StickItToEm extends AppCompatActivity {
                 1410, intent, PendingIntent.FLAG_MUTABLE);
 
         int[] data = {R.drawable.captainamerica_sticker, R.drawable.drstrange_sticker, R.drawable.spiderman_sticker,
-                R.drawable.thor_sticker};
+                R.drawable.thor_sticker, R.drawable.deadpool_sticker};
         // Create the notification builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.ic_notification_overlay)
                 .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(BitmapFactory.decodeResource(getResources(),
-                        sticker.getImageId() < 4 ? data[sticker.getImageId()] : R.drawable.captainamerica_sticker)).bigLargeIcon(BitmapFactory.decodeResource(getResources(),
-                        sticker.getImageId() < 4 ? data[sticker.getImageId()] : R.drawable.captainamerica_sticker)))
+                        sticker.getImageId() < data.length ? data[sticker.getImageId()] : R.drawable.captainamerica_sticker)).bigLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        sticker.getImageId() < data.length ? data[sticker.getImageId()] : R.drawable.captainamerica_sticker)))
                 .setContentTitle("You have a new sticker from " + sticker.getFrom() + "!")
                 .setContentText("imageId=" + sticker.getImageId())
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
