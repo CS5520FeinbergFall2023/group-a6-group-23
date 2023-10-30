@@ -8,7 +8,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleViewStickers"
-        android:layout_width="423dp"
+        android:layout_width="wrap_content"
         android:layout_height="481dp"
         app:layout_constraintBottom_toTopOf="@+id/btnHistory"
         app:layout_constraintEnd_toEndOf="parent"
