@@ -17,10 +17,10 @@
         android:theme="@style/Theme.S3KB"
         tools:targetApi="31">
         <activity
-            android:name=".AboutMe"
+            android:name=".ProjectStarterPageActivity"
             android:exported="false" />
         <activity
-            android:name=".AboutMeActivity"
+            android:name=".AboutMe"
             android:exported="false" />
         <activity
             android:name=".StickersHistory"

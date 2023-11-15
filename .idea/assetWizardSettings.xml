@@ -67,7 +67,21 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="imagePath" value="C:\Users\kaush\AppData\Local\Temp\ic_android_black_24dp.xml" />
+                                                <entry key="color" value="0a0101" />
+                                                <entry key="imagePath" value="C:\Users\kaush\AppData\Local\Temp\baseline_home_24.xml" />
+                                                <entry key="scalingPercent" value="92" />
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="foregroundClipartAsset">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/home/baseline_home_24.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -114,8 +128,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="foregroundAssetType" value="TEXT" />
-                                      <entry key="outputName" value="ic_launcher_s3kb" />
+                                      <entry key="foregroundAssetType" value="CLIP_ART" />
+                                      <entry key="outputName" value="ic_launcher_s3kb_home" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -292,6 +306,11 @@
                 </map>
               </option>
             </PersistentState>
+          </value>
+        </entry>
+        <entry key="vectorWizard">
+          <value>
+            <PersistentState />
           </value>
         </entry>
       </map>

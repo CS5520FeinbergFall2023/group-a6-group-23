@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button fButton = findViewById(R.id.firebase_realtime_database);
         fButton.setOnClickListener(this);
         FirebaseApp.initializeApp(this);
+        Button project = findViewById(R.id.start_project);
+        project.setOnClickListener(this);
 
         Button aboutMe = findViewById(R.id.btnAbout);
         aboutMe.setOnClickListener(this);
@@ -36,11 +39,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, LoginA8Activity.class);
             startActivity(intent);
         }
-
-        if(view.getId() == R.id.btnAbout){
+        if(view.getId() == R.id.start_project) {
+            Intent intent = new Intent(this, ProjectStarterPageActivity.class);
+            startActivity(intent);
+        }
+        if(view.getId() == R.id.btnAbout) {
             Intent intent = new Intent(this, AboutMe.class);
             startActivity(intent);
         }
-
     }
 }
