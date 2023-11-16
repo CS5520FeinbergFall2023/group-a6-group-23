@@ -28,7 +28,7 @@ public class ProjectStarterPageActivity extends AppCompatActivity
                 .setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.nav_restaurant);
     }
-    First firstFragment = new First();
+    LocationFragment firstFragment = new LocationFragment();
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
