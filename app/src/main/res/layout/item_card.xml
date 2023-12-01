@@ -27,22 +27,21 @@
             android:id="@+id/item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/item_icon"
+            android:text="data"
             android:textColor="@android:color/black"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:text="data" />
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/item_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_name"
-            android:layout_toEndOf="@+id/item_icon"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:id="@+id/item_desc"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/item_icon"
             android:text="description" />
 
     </RelativeLayout>

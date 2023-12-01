@@ -26,7 +26,6 @@ public class InterbankTransactionActivity extends AppCompatActivity implements D
     private ArrayList<ItemCard> itemList = new ArrayList<>();
     private Handler mainHandler = new Handler(Looper.getMainLooper());
     private Executor executor = Executors.newSingleThreadExecutor();
-
     private RecyclerView recyclerView;
     private RviewAdapter rviewAdapter;
     private RecyclerView.LayoutManager rLayoutManger;
