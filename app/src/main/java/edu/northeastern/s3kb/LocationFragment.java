@@ -1,15 +1,18 @@
 package edu.northeastern.s3kb;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +36,8 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +68,7 @@ public class LocationFragment extends Fragment {
     private Pattern pattern;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private LocationManager locationManager;
+    private Location lastKnownLocation;
     public LocationFragment() {
     }
 
@@ -76,7 +82,7 @@ public class LocationFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_location, container, false);
-        init(view, savedInstanceState);
+        createRecyclerView(view);
         zipcode = view.findViewById(R.id.location_zip_edit);
         search = view.findViewById(R.id.location_search);
         pattern = Pattern.compile("\\b\\d{5}\\b");
@@ -110,7 +116,6 @@ public class LocationFragment extends Fragment {
                 } else {
                     userData.clear();
                     for(String data: usersMap.keySet()) {
-                        Log.v("KAUSHIK", usersMap.get(data).getOrDefault("location", "").toString()+",  "+(zipcode.getText().toString()));
                         if(usersMap.get(data).getOrDefault("location", "").toString().contains(zipcode.getText().toString())){
                             userData.add(data);
                         }
@@ -131,6 +136,38 @@ public class LocationFragment extends Fragment {
                 requestLocationPermission();
             }
         });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                rviewAdapter.notifyItemChanged(position);
+                double lat = (double)usersMap.get(userData.get(position)).get("latitude");
+                double lon = (double)usersMap.get(userData.get(position)).get("longitude");
+                Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" +
+                        lastKnownLocation.getLatitude() + "," + lastKnownLocation.getLongitude() +
+                        "&destination=" + lat + "," + lon +
+                        "&travelmode=driving");
+
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                Context context = requireActivity();
+                PackageManager packageManager = context.getPackageManager();
+
+                if (mapIntent.resolveActivity(packageManager) != null) {
+                    startActivity(mapIntent);
+                } else {
+                    Toast.makeText(requireContext(), "Google Maps app not installed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        initialItemData(savedInstanceState);
         return view;
     }
 
@@ -140,28 +177,27 @@ public class LocationFragment extends Fragment {
             if (itemList == null || itemList.size() == 0) {
 
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
+                try{
 
-                // Retrieve keys we stored in the instance
                 for (int i = 0; i < size; i++) {
                     Integer imgId = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
                     String itemName = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
                     String itemDesc = savedInstanceState.getString(KEY_OF_INSTANCE + i + "2");
+                    ItemCard itemCard = new ItemCard(R.drawable.apr, itemName, itemDesc);
 
-                    ItemCard itemCard = new ItemCard(imgId, itemName, itemDesc);
-
+                    Log.v("KAUSHIK", ""+itemName +" ,    " + itemDesc);
                     itemList.add(itemCard);
+//                    rviewAdapter.notifyItemInserted(i);
                 }
+                    Log.v("KAUSHIK", ""+itemList);
                 rviewAdapter.notifyDataSetChanged();
+                }catch(Exception e){
+                    Log.v("KAUSHIK", e.getMessage());
+                }
             }
         }
 
     }
-    private void init(View view, Bundle savedInstanceState) {
-        initialItemData(savedInstanceState);
-        createRecyclerView(view);
-    }
-
-
     private void createRecyclerView(View view) {
         rLayoutManger = new LinearLayoutManager(requireContext());
         recyclerView = view.findViewById(R.id.rcycle_nearby_restaurant);
@@ -228,7 +264,7 @@ public class LocationFragment extends Fragment {
         if (locationManager != null) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                 if (lastKnownLocation != null) {
                     double latitude = lastKnownLocation.getLatitude();
