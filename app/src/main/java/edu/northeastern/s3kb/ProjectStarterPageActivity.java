@@ -36,6 +36,8 @@ public class ProjectStarterPageActivity extends AppCompatActivity
         outState.putBoolean("Rotated", true);
         super.onSaveInstanceState(outState);
     }
+    OwnerRegisterFragment ownerRegisterFragment = new OwnerRegisterFragment();
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
@@ -46,11 +48,18 @@ public class ProjectStarterPageActivity extends AppCompatActivity
                     .commit();
             return true;
         }
-        if(item.getItemId() == R.id.nav_home) {
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.flFragment, )
-//                    .commit();
+        if(item.getItemId() == R.id.nav_seeker) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.flFragment, firstFragment)
+                    .commit();
+            return true;
+        }
+        if(item.getItemId() == R.id.nav_owner) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.flFragment, ownerRegisterFragment)
+                    .commit();
             return true;
         }
         return false;
