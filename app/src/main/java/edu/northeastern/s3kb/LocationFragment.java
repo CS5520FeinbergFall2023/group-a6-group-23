@@ -82,7 +82,9 @@ public class LocationFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_location, container, false);
+        initialItemData(savedInstanceState);
         createRecyclerView(view);
+
         zipcode = view.findViewById(R.id.location_zip_edit);
         search = view.findViewById(R.id.location_search);
         pattern = Pattern.compile("\\b\\d{5}\\b");
@@ -149,6 +151,9 @@ public class LocationFragment extends Fragment {
                 rviewAdapter.notifyItemChanged(position);
                 double lat = (double)usersMap.get(userData.get(position)).get("latitude");
                 double lon = (double)usersMap.get(userData.get(position)).get("longitude");
+                if(lastKnownLocation == null) {
+                    requestInitialLocationPermission();
+                }
                 Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" +
                         lastKnownLocation.getLatitude() + "," + lastKnownLocation.getLongitude() +
                         "&destination=" + lat + "," + lon +
@@ -165,9 +170,8 @@ public class LocationFragment extends Fragment {
                 }
             }
         });
-        itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        initialItemData(savedInstanceState);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         return view;
     }
 
@@ -177,22 +181,13 @@ public class LocationFragment extends Fragment {
             if (itemList == null || itemList.size() == 0) {
 
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
-                try{
-
                 for (int i = 0; i < size; i++) {
                     Integer imgId = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
                     String itemName = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
                     String itemDesc = savedInstanceState.getString(KEY_OF_INSTANCE + i + "2");
-                    ItemCard itemCard = new ItemCard(R.drawable.apr, itemName, itemDesc);
+                    ItemCard itemCard = new ItemCard(imgId, itemName, itemDesc);
 
-                    Log.v("KAUSHIK", ""+itemName +" ,    " + itemDesc);
                     itemList.add(itemCard);
-//                    rviewAdapter.notifyItemInserted(i);
-                }
-                    Log.v("KAUSHIK", ""+itemList);
-                rviewAdapter.notifyDataSetChanged();
-                }catch(Exception e){
-                    Log.v("KAUSHIK", e.getMessage());
                 }
             }
         }
@@ -253,6 +248,27 @@ public class LocationFragment extends Fragment {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             getLocation();
+        } else {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        }
+    }
+    private void requestInitialLocationPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
+
+            if (locationManager != null) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    if (lastKnownLocation == null) {
+                        Toast.makeText(requireContext(), "Last known location not available", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Location permission not granted", Toast.LENGTH_SHORT).show();
+                }
+            }
         } else {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }
