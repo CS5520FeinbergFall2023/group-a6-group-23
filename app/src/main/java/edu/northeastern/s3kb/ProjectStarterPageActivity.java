@@ -24,12 +24,18 @@ public class ProjectStarterPageActivity extends AppCompatActivity
         bottomNavigationView
                 = findViewById(R.id.bottomNavigationView);
 
-        bottomNavigationView
-                .setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.nav_restaurant);
+        if(savedInstanceState == null) {
+            bottomNavigationView
+                    .setOnNavigationItemSelectedListener(this);
+            bottomNavigationView.setSelectedItemId(R.id.nav_restaurant);
+        }
     }
     LocationFragment firstFragment = new LocationFragment();
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean("Rotated", true);
+        super.onSaveInstanceState(outState);
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
@@ -41,10 +47,10 @@ public class ProjectStarterPageActivity extends AppCompatActivity
             return true;
         }
         if(item.getItemId() == R.id.nav_home) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.flFragment, firstFragment)
-                    .commit();
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.flFragment, )
+//                    .commit();
             return true;
         }
         return false;

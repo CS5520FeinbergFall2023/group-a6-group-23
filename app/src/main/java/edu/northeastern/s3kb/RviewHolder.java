@@ -1,5 +1,6 @@
 package edu.northeastern.s3kb;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -17,6 +18,5 @@ public class RviewHolder extends RecyclerView.ViewHolder {
         itemIcon = itemView.findViewById(R.id.item_icon);
         itemName = itemView.findViewById(R.id.item_name);
         itemDesc = itemView.findViewById(R.id.item_desc);
-
     }
 }
