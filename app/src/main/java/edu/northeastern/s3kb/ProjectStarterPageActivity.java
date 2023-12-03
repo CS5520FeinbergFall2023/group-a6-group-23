@@ -30,13 +30,14 @@ public class ProjectStarterPageActivity extends AppCompatActivity
             bottomNavigationView.setSelectedItemId(R.id.nav_restaurant);
         }
     }
-    LocationFragment firstFragment = new LocationFragment();
+    LocationFragment locationFragment = new LocationFragment();
+    SeekerFragment seeker = new SeekerFragment();
+    OwnerRegisterFragment ownerRegisterFragment = new OwnerRegisterFragment();
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean("Rotated", true);
         super.onSaveInstanceState(outState);
     }
-    OwnerRegisterFragment ownerRegisterFragment = new OwnerRegisterFragment();
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
@@ -44,14 +45,14 @@ public class ProjectStarterPageActivity extends AppCompatActivity
         if(item.getItemId() == R.id.nav_restaurant) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.flFragment, firstFragment)
+                    .replace(R.id.flFragment, locationFragment)
                     .commit();
             return true;
         }
         if(item.getItemId() == R.id.nav_seeker) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.flFragment, firstFragment)
+                    .replace(R.id.flFragment, seeker)
                     .commit();
             return true;
         }
