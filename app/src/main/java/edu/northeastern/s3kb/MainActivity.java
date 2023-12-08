@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button aboutMe = findViewById(R.id.btnAbout);
         aboutMe.setOnClickListener(this);
+
+        Button rentalButton = findViewById(R.id.rentButton);
+        rentalButton.setOnClickListener(this);
     }
 
     @Override
@@ -45,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(view.getId() == R.id.btnAbout) {
             Intent intent = new Intent(this, AboutMe.class);
+            startActivity(intent);
+        }
+        if(view.getId() == R.id.rentButton) {
+            Intent intent = new Intent(this, AddRentalActivity.class);
             startActivity(intent);
         }
     }
