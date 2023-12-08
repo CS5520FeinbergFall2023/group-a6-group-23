@@ -19,6 +19,12 @@
         android:theme="@style/Theme.S3KB"
         tools:targetApi="31">
         <activity
+            android:name=".AddRentalImagesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddRentalActivity"
+            android:exported="false" />
+        <activity
             android:name=".PropertySeekerActivity"
             android:exported="false" />
         <activity
