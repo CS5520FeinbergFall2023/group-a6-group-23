@@ -2,4 +2,10 @@
     <string name="app_name">S3KB</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="propertyType">
+        <item>Apartment</item>
+        <item>Townhouse</item>
+        <item>Duplex</item>
+        <item>Condo</item>
+    </string-array>
 </resources>
