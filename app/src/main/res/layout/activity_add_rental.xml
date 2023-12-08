@@ -30,27 +30,10 @@
     </androidx.appcompat.widget.Toolbar>
 
     <EditText
-        android:id="@+id/usernameEt"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_below="@+id/toolbar"
-        android:background="#e6e6fa"
-        android:hint="Name"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/addressEt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <EditText
         android:id="@+id/addressEt"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_below="@+id/usernameEt"
+        android:layout_below="@+id/toolbar"
         android:background="#e6e6fa"
         android:hint="Address"
         android:textAlignment="center"
@@ -61,7 +44,7 @@
         app:layout_constraintBottom_toTopOf="@+id/aptEt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameEt"/>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     <EditText
         android:id="@+id/aptEt"
@@ -104,7 +87,7 @@
         android:layout_below="@+id/cityEt"
         android:background="#e6e6fa"
         android:hint="State"
-        app:layout_constraintBottom_toTopOf="@+id/zipcodeEt"
+        app:layout_constraintBottom_toTopOf="@+id/countryEt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cityEt"
@@ -115,12 +98,12 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/zipcodeEt"
+        android:id="@+id/countryEt"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_below="@+id/cityEt"
         android:background="#e6e6fa"
-        android:hint="Zip Code"
+        android:hint="Country"
         app:layout_constraintBottom_toTopOf="@+id/selectPropertyTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +130,7 @@
         app:layout_constraintBottom_toTopOf="@+id/propertySpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/zipcodeEt" />
+        app:layout_constraintTop_toBottomOf="@+id/countryEt" />
 
     <Spinner
         android:id="@+id/propertySpinner"

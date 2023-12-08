@@ -23,10 +23,9 @@ public class AddRentalActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private EditText addressEditText;
-    private EditText usernameEditText;
     private EditText aptUnitNumberEditText;
     private EditText stateEditText;
-    private EditText zipCodeEditText;
+    private EditText countryEditText;
     private EditText cityEditText;
     private Button nextButton;
 
@@ -40,40 +39,45 @@ public class AddRentalActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("owner");
 
         propertyTypeSpinner = findViewById(R.id.propertySpinner);
-        String[] propertyTypeItems = {"Apartment", "House/Villa"};
+        String[] propertyTypeItems = {"Apartment", "House/Villa", "Condo"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, propertyTypeItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         propertyTypeSpinner.setAdapter(adapter);
 
         addressEditText = findViewById(R.id.addressEt);
         aptUnitNumberEditText = findViewById(R.id.aptEt);
-        usernameEditText = findViewById(R.id.usernameEt);
         stateEditText = findViewById(R.id.stateEt);
         cityEditText = findViewById(R.id.cityEt);
-        zipCodeEditText = findViewById(R.id.zipcodeEt);
+        countryEditText = findViewById(R.id.countryEt);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String address = addressEditText.getText().toString();
-                String aptUnitNumber = aptUnitNumberEditText.getText().toString();
                 String propertyTpe = propertyTypeSpinner.getSelectedItem().toString();
-                String username = usernameEditText.getText().toString();
                 String city = cityEditText.getText().toString();
                 String state = stateEditText.getText().toString();
-                int zipcode = Integer.parseInt(zipCodeEditText.getText().toString());
-                databaseReference.child(username).get().addOnCompleteListener((node)->{
-                    Map<String, Object> userMap = (Map<String, Object>) node.getResult().getValue();
-                    Owner owner = null;
-                    owner = new Owner(username, address, aptUnitNumber, propertyTpe, city, state, zipcode);
-                    databaseReference.child(username).setValue(owner);
+                String country = countryEditText.getText().toString();
+
+                Intent i = new Intent(AddRentalActivity.this, AddRentalImagesActivity.class);
+                i.putExtra("country", country);
+                i.putExtra("address", address);
+                i.putExtra("state", state);
+                i.putExtra("city", city);
+                i.putExtra("type", propertyTpe);
+                startActivity(i);
+                finish();
+//                databaseReference.child(username).get().addOnCompleteListener((node)->{
+//                    Map<String, Object> userMap = (Map<String, Object>) node.getResult().getValue();
+//                    Owner owner = null;
+//                    owner = new Owner(username, address, aptUnitNumber, propertyTpe, city, state, zipcode);
+//                    databaseReference.child(username).setValue(owner);
 
 //                    Intent clickIntent = new Intent(LoginA8Activity.this, StickItToEm.class);
 //                    clickIntent.putExtra("currentUserName", userName);
 //                    clickIntent.putExtra("lastVisited", date.toString());
 //                    startActivity(clickIntent);
-                });
-
+//                });
             }
         });
 
