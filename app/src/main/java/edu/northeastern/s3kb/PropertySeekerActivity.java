@@ -98,107 +98,57 @@ public class PropertySeekerActivity extends AppCompatActivity {
                         myFavoritePropertiesList.add(next.child("propID").getValue().toString());
                     }
                 }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.v("KAUSHIK","The read failed: " + error.getCode());
-                    System.out.println("The read failed: " + error.getCode());
-                }
-            });
-        }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.v("KAUSHIK","The read failed: " + error.getCode());
+                System.out.println("The read failed: " + error.getCode());
+            }
+        });
 
-        private void fetchUserPreferences() {
-            databaseReference.child("seekers").child(userKey).child("myPreference").addValueEventListener(new ValueEventListener(){
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    curUserPref = snapshot.getValue(Preference.class);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.v("KAUSHIK","The read failed: " + error.getCode());
-                    System.out.println("The read failed: " + error.getCode());
-                }
-            });
-        }
+        databaseReference.child("seekers").child(userKey).child("myPreference").addValueEventListener(new ValueEventListener(){
 
-        private void fetchProperties() {
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Iterable<DataSnapshot> snapshotIterator = dataSnapshot.child("houses").getChildren();
-                    Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
-                    while (iterator.hasNext()) {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                curUserPref = snapshot.getValue(Preference.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.v("KAUSHIK","The read failed: " + error.getCode());
+                System.out.println("The read failed: " + error.getCode());
+            }
+        });
 
-                        Iterable<DataSnapshot> snapshotIterator2 = iterator.next().getChildren();
-                        Iterator<DataSnapshot> iterator2 = snapshotIterator2.iterator();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.child("houses").getChildren();
+                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                while (iterator.hasNext()) {
 
-                        while (iterator2.hasNext()) {
-                            DataSnapshot next = (DataSnapshot) iterator2.next();
+                    Iterable<DataSnapshot> snapshotIterator2 = iterator.next().getChildren();
+                    Iterator<DataSnapshot> iterator2 = snapshotIterator2.iterator();
 
-                            Property article = new Property(String.valueOf(next.child("houseId").getValue()),
-                                    String.valueOf(next.child("noOfRoom").getValue()),
-                                    String.valueOf(next.child("rentPerRoom").getValue()),
-                                    String.valueOf(next.child("houseDescription").getValue()),
-                                    String.valueOf(next.child("houseLocation").getValue()),
-                                    String.valueOf(next.child("houseImage").getValue()),
-                                    String.valueOf(next.child("userId").getValue()),
-                                    String.valueOf(next.child("country").getValue()),
-                                    String.valueOf(next.child("state").getValue()),
-                                    String.valueOf(next.child("type").getValue()), String.valueOf(next.child("baths").getValue()),
-                                    String.valueOf(next.child("address").getValue()));
+                    while (iterator2.hasNext()) {
+                        DataSnapshot next = (DataSnapshot) iterator2.next();
 
-                            Log.v("KAUSHIK", article.getAddress());
+                        Property article = new Property(String.valueOf(next.child("houseId").getValue()),
+                                String.valueOf(next.child("noOfRoom").getValue()),
+                                String.valueOf(next.child("rentPerRoom").getValue()),
+                                String.valueOf(next.child("houseDescription").getValue()),
+                                String.valueOf(next.child("houseLocation").getValue()),
+                                String.valueOf(next.child("houseImage").getValue()),
+                                String.valueOf(next.child("userId").getValue()),
+                                String.valueOf(next.child("country").getValue()),
+                                String.valueOf(next.child("state").getValue()),
+                                String.valueOf(next.child("type").getValue()),String.valueOf(next.child("baths").getValue()),
+                                String.valueOf(next.child("address").getValue()));
 
-                            if (!myFavoritePropertiesList.contains(article.getHouseId())) {
+                        Log.v("KAUSHIK", article.getAddress());
 
-                                if (curUserPref == null) {
-                                    propertiesList.add(article);
+                        filter(article);
 
-                                    if (propertyRecyclerView != null && propertyRecyclerView.getAdapter() != null)
-                                        propertyRecyclerView.getAdapter().notifyItemInserted(propertyRecyclerView.getAdapter().getItemCount());
 
-                                } else {
-
-                                    if (curUserPref.getLocations() == null || (curUserPref.getLocations().contains(article.getHouseLocation()))) {
-
-                                        if (curUserPref.getMinimumPrice() <= Integer.parseInt(article.getRentPerRoom())
-                                                && curUserPref.getMaximumPrice() >= Integer.parseInt(article.getRentPerRoom())) {
-
-                                            if (article.getType() == null || curUserPref.getTypeOfHouse() == null
-                                                    || (curUserPref.getTypeOfHouse().contains(article.getType()))) {
-
-                                                boolean addProperty = false;
-                                                //number of bedrooms
-                                                if ("1".equalsIgnoreCase(curUserPref.getNumberOfBedrooms())) {
-                                                    if (article.getNoOfRoom().equalsIgnoreCase("1")) {
-                                                        addProperty = true;
-                                                    }
-
-                                                } else if ("2 - 3".equalsIgnoreCase(curUserPref.getNumberOfBedrooms())) {
-                                                    if (article.getNoOfRoom().equalsIgnoreCase("2")
-                                                            || article.getNoOfRoom().equalsIgnoreCase("3")) {
-                                                        addProperty = true;
-                                                    }
-
-                                                } else if ("> 4".equalsIgnoreCase(curUserPref.getNumberOfBedrooms())) {
-                                                    if (Integer.parseInt(article.getNoOfRoom()) >= 4) {
-                                                        addProperty = true;
-                                                    }
-                                                } else {
-                                                    addProperty = true;
-                                                }
-
-                                                if (addProperty) {
-                                                    propertiesList.add(article);
-
-                                                    if (propertyRecyclerView != null && propertyRecyclerView.getAdapter() != null)
-                                                        propertyRecyclerView.getAdapter().notifyItemInserted(propertyRecyclerView.getAdapter().getItemCount());
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
 
@@ -372,4 +322,46 @@ public class PropertySeekerActivity extends AppCompatActivity {
         finish();
     }
 
+    private void filter(Property article) {
+        if (!myFavoritePropertiesList.contains(article.getHouseId())) {
+            if (curUserPref == null || isArticleMatchingPreferences(article)) {
+                propertiesList.add(article);
+                notifyAdapterItemInserted();
+            }
+        }
+    }
+    private boolean isArticleMatchingPreferences(Property article) {
+        if (curUserPref == null) {
+            return true;
+        }
+
+        List<String> locations = curUserPref.getLocations();
+        int minPrice = curUserPref.getMinimumPrice();
+        int maxPrice = curUserPref.getMaximumPrice();
+        List<String> typeOfHouse = curUserPref.getTypeOfHouse();
+        String numberOfBedrooms = curUserPref.getNumberOfBedrooms();
+        String articleNoOfRoom = article.getNoOfRoom();
+
+        return (locations == null || locations.contains(article.getHouseLocation())) &&
+                (minPrice <= Integer.parseInt(article.getRentPerRoom()) && maxPrice >= Integer.parseInt(article.getRentPerRoom())) &&
+                (typeOfHouse == null || typeOfHouse.contains(article.getType())) &&
+                isNumberOfBedroomsMatching(numberOfBedrooms, articleNoOfRoom);
+    }
+
+    private boolean isNumberOfBedroomsMatching(String numberOfBedrooms, String articleNoOfRoom) {
+        if ("1".equalsIgnoreCase(numberOfBedrooms)) {
+            return articleNoOfRoom.equalsIgnoreCase("1");
+        } else if ("2 - 3".equalsIgnoreCase(numberOfBedrooms)) {
+            return articleNoOfRoom.equalsIgnoreCase("2") || articleNoOfRoom.equalsIgnoreCase("3");
+        } else if ("> 4".equalsIgnoreCase(numberOfBedrooms)) {
+            return Integer.parseInt(articleNoOfRoom) >= 4;
+        }
+        return true;
+    }
+
+    private void notifyAdapterItemInserted() {
+        if (propertyRecyclerView != null && propertyRecyclerView.getAdapter() != null) {
+            propertyRecyclerView.getAdapter().notifyItemInserted(propertyRecyclerView.getAdapter().getItemCount());
+        }
+    }
 }
