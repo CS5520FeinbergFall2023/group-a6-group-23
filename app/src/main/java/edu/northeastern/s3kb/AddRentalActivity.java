@@ -23,7 +23,6 @@ public class AddRentalActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private EditText addressEditText;
-    private EditText aptUnitNumberEditText;
     private EditText stateEditText;
     private EditText countryEditText;
     private EditText cityEditText;
@@ -45,7 +44,6 @@ public class AddRentalActivity extends AppCompatActivity {
         propertyTypeSpinner.setAdapter(adapter);
 
         addressEditText = findViewById(R.id.addressEt);
-        aptUnitNumberEditText = findViewById(R.id.aptEt);
         stateEditText = findViewById(R.id.stateEt);
         cityEditText = findViewById(R.id.cityEt);
         countryEditText = findViewById(R.id.countryEt);
