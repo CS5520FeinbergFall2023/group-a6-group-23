@@ -54,6 +54,7 @@ public class AddRentalImagesActivity extends AppCompatActivity {
                 String rentPerRoom = rentEt.getText().toString();
                 String houseDescription = houseDescriptionEt.getText().toString();
                 String baths = bathroomsEt.getText().toString();
+
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
                 assert firebaseUser != null;
