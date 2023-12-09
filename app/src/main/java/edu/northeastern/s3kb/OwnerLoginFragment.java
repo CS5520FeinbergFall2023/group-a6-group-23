@@ -108,7 +108,7 @@ public class OwnerLoginFragment extends Fragment {
     }
 
     private void navigateOwnerToHomePage() {
-        startActivity(new Intent(requireContext(), LocationFragment.class));
+        startActivity(new Intent(requireContext(), Listings.class));
 
     }
 }

@@ -136,7 +136,8 @@ public class SeekerFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("The read failed: " + error.getCode());
+                Log.e("KAUSHIK", "The read failed: " + error.getMessage());
+                System.out.println(error.getMessage());
             }
         });
 

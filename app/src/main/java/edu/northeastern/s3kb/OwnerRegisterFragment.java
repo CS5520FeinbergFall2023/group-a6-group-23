@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,6 @@ public class OwnerRegisterFragment extends Fragment {
     ProgressDialog progressDialog;
 
     public OwnerRegisterFragment() {
-        // Required empty public constructor
     }
 
 
@@ -148,8 +148,8 @@ public class OwnerRegisterFragment extends Fragment {
                             Toast.makeText(requireContext(), "Email already taken!", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Log.v("KAUSHIK", e.getMessage());
                         }
-                        //Toast.makeText(OwnerRegister.this, "Email Already Existing, please Log In", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -157,7 +157,7 @@ public class OwnerRegisterFragment extends Fragment {
     }
 
     private void navigateOwnerToHomePage() {
-        Intent intent = new Intent(requireContext(), AboutMe.class);
+        Intent intent = new Intent(requireContext(), AddRentalActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 

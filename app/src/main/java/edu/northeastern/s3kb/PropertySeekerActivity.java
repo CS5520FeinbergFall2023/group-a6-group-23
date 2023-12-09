@@ -105,6 +105,7 @@ public class PropertySeekerActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.v("KAUSHIK","The read failed: " + error.getCode());
                 System.out.println("The read failed: " + error.getCode());
             }
         });
@@ -117,6 +118,7 @@ public class PropertySeekerActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.v("KAUSHIK","The read failed: " + error.getCode());
                 System.out.println("The read failed: " + error.getCode());
             }
         });
@@ -134,7 +136,6 @@ public class PropertySeekerActivity extends AppCompatActivity {
                     while (iterator2.hasNext()) {
                         DataSnapshot next = (DataSnapshot) iterator2.next();
 
-                        //Without filtering - might have to apply filter here?
                         Property article = new Property(String.valueOf(next.child("houseId").getValue()),
                                 String.valueOf(next.child("noOfRoom").getValue()),
                                 String.valueOf(next.child("rentPerRoom").getValue()),
@@ -146,6 +147,8 @@ public class PropertySeekerActivity extends AppCompatActivity {
                                 String.valueOf(next.child("state").getValue()),
                                 String.valueOf(next.child("type").getValue()),String.valueOf(next.child("baths").getValue()),
                                 String.valueOf(next.child("address").getValue()));
+
+                        Log.v("KAUSHIK", article.getAddress());
 
                         if(!myFavoritePropertiesList.contains(article.getHouseId())){
 
@@ -216,6 +219,7 @@ public class PropertySeekerActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.v("KAUSHIK","The read failed: " + databaseError.getCode());
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });

@@ -40,6 +40,41 @@
             android:name=".ProjectStarterPageActivity"
             android:exported="false" />
         <activity
+            android:name=".SeekerProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewLocation"
+            android:exported="false" />
+        <activity
+            android:name=".PropertyContentsSeeker"
+            android:exported="false" />
+        <activity
+            android:name=".PropertyContents"
+            android:exported="false" />
+        <activity
+            android:name=".Listings"
+            android:exported="false" />
+        <activity
+            android:name=".AddProperty"
+            android:exported="false" />
+        <activity
+            android:name=".HouseQuestionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserAvatarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddPropertyAddress"
+
+            
+            android:exported="false" />
+        <activity
+            android:name=".ContactOwner"
+            android:exported="false" />
+        <activity
+            android:name=".FavoritesActivity"
+            android:exported="false" />
+        <activity
             android:name=".AboutMe"
             android:exported="false" />
         <activity
