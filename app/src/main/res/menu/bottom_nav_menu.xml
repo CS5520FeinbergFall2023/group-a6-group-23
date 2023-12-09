@@ -10,6 +10,10 @@
             android:icon="@drawable/ic_launcher_s3kb_home_foreground"/>
         <item
             android:id="@+id/nav_owner"
-            android:title="Owner"
+            android:title="Owner Registration"
             android:icon="@drawable/ic_launcher_s3kb_owner_foreground"/>
+        <item
+            android:id="@+id/nav_login"
+            android:title="Owner Login"
+            android:icon="@drawable/ic_launcher_s3kb_login_foreground"/>
 </menu>

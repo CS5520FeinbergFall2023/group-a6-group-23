@@ -64,26 +64,17 @@ public class OwnerRegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_owner_register, container, false);
         username = view.findViewById(R.id.et_username);
         email = view.findViewById(R.id.et_email);
         password = view.findViewById(R.id.et_password);
         confirmPassword = view.findViewById(R.id.et_confirmPassword);
         register = view.findViewById(R.id.btn_register);
-        login = view.findViewById(R.id.tv_loginButton);
         phoneNumber = view.findViewById(R.id.et_phoneNumber);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
         progressDialog = new ProgressDialog(requireContext());
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(requireContext(), OwnerLoginFragment.class));
-            }
-        });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
