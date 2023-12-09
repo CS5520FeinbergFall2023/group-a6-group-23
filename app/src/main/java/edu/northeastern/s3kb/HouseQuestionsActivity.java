@@ -40,14 +40,11 @@ public class HouseQuestionsActivity extends AppCompatActivity {
     private List<String> myPreferredLocations;
     private List<String> myPreferredHouseType;
 
-    //bundle with data from previous activity.
     Bundle bundle = null;
     String userKey, avatarId, seekerFullName, seekerEmailId, seekerPhone, legalSex, age;
 
-    // creating a variable for Firebase Database.
     FirebaseDatabase firebaseDatabase;
 
-    // creating a variable for reference for Firebase.
     DatabaseReference databaseReference;
 
     @Override
@@ -86,23 +83,19 @@ public class HouseQuestionsActivity extends AppCompatActivity {
 
         RadioGroup numberOfBedsRG  = (RadioGroup) findViewById(R.id.bedroomRadioGroup);
         numberOfBedsRG.setOnCheckedChangeListener((group, checkedId) -> {
-            // do operations specific to this selection
             RadioButton radioButton = (RadioButton) findViewById(checkedId);
             numOfBeds = radioButton.getText().toString();
         });
 
         RadioGroup numberOfBathsRG = (RadioGroup) findViewById(R.id.bathroomRadioGroup);
         numberOfBathsRG.setOnCheckedChangeListener((group, checkedId) -> {
-            // do operations specific to this selection
             RadioButton radioButton = (RadioButton) findViewById(checkedId);
             numOfBaths = radioButton.getText().toString();
         });
 
         Spinner minimumPriceSpinner = (Spinner) findViewById(R.id.minimumPriceSpinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
                 R.array.min_price_array, android.R.layout.simple_spinner_item);
-        // Apply the adapter to the spinner
         minimumPriceSpinner.setAdapter(adapter1);
         minimumPriceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

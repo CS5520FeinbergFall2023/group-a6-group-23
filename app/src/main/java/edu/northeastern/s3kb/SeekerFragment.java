@@ -51,8 +51,6 @@ public class SeekerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_seeker, container, false);
-
-        // instance of the Firebase database.
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         // get reference for the database.
@@ -63,12 +61,8 @@ public class SeekerFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                // below line is for checking whether the
-                // edittext fields are empty or not.
                 if (userName.getText().toString().length() == 0) {
-                    // if the text fields are empty
-                    // then show the below message.
-                    Toast.makeText(requireContext(), "Please enter user name!",
+                    Toast.makeText(requireContext(), "Enter a Valid User Name!",
                             Toast.LENGTH_SHORT).show();
                 } else {
                     user = new SeekerUser(userName.getText().toString(), "seekers");
@@ -95,42 +89,22 @@ public class SeekerFragment extends Fragment {
                         //user name exists
                         userKey = data.getKey();
                         exists[0] = true;
-                        break;
-                    }
-                }
+                        Toast.makeText(requireContext(), "logged in successfully!", Toast.LENGTH_SHORT).show();
 
-                if (!exists[0]) {
-                    //user name does not exists, create new
-                    // data base reference will sends data to firebase.
-                    DatabaseReference db = databaseReference.child(user.getUserType()).push();
-                    userKey = db.getKey();
-                    db.setValue(user).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            created[0] = false;
-                            Toast.makeText(requireContext(), "Could not Add User, Try again", Toast.LENGTH_SHORT).show();
+                        if("seekers".equalsIgnoreCase(user.getUserType())){
+                            Intent clickIntent = new Intent(requireContext(), PropertySeekerActivity.class);
+                            clickIntent.putExtra("userKey", userKey);
+                            startActivity(clickIntent);
                         }
-                    });
-                } else {
-                    created[0] = false;
+                        return;
+                    }
                 }
-                if (created[0]) {
-                    Toast.makeText(requireContext(), "Added new Property Seeker!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Added new Property Seeker!", Toast.LENGTH_SHORT).show();
 
-                    if("seekers".equalsIgnoreCase(user.getUserType())){
-                        Intent clickIntent = new Intent(requireContext(), BasicQuestionsActivity.class);
-                        clickIntent.putExtra("userKey", userKey);
-                        startActivity(clickIntent);
-                    }
-
-                } else {
-                    Toast.makeText(requireContext(), "logged in successfully!", Toast.LENGTH_SHORT).show();
-
-                    if("seekers".equalsIgnoreCase(user.getUserType())){
-                        Intent clickIntent = new Intent(requireContext(), PropertySeekerActivity.class);
-                        clickIntent.putExtra("userKey", userKey);
-                        startActivity(clickIntent);
-                    }
+                if("seekers".equalsIgnoreCase(user.getUserType())){
+                    Intent clickIntent = new Intent(requireContext(), PropertySeekerActivity.class);
+                    clickIntent.putExtra("userKey", userKey);
+                    startActivity(clickIntent);
                 }
             }
 

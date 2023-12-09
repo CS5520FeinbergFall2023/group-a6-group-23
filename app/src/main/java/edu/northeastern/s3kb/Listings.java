@@ -55,7 +55,7 @@ public class Listings extends AppCompatActivity {
         floating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Listings.this, AddPropertyAddress.class));
+                startActivity(new Intent(Listings.this, AddRentalActivity.class));
                 overridePendingTransition( android.R.anim.fade_in,android.R.anim.fade_out);
 
             }
