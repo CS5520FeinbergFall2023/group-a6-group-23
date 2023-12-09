@@ -82,7 +82,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                         String address = snapshot.child("houseLocation").getValue().toString();
                         String state = snapshot.child("state").getValue().toString();
                         String country = snapshot.child("country").getValue().toString();
-                        String image = snapshot.child("houseImage").getValue().toString();
+//                        String image = snapshot.child("houseImage").getValue().toString();
                         String description = snapshot.child("houseDescription").getValue().toString();
                         String type = snapshot.child("type").getValue().toString();
                         String room = snapshot.child("noOfRoom").getValue().toString();
@@ -91,7 +91,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
                         prop.setCountry(country);
                         prop.setDescription(description);
-                        prop.setImage(image);
+//                        prop.setImage(image);
                         prop.setRent(rent);
                         prop.setLocation(address);
                         prop.setRooms(room);
@@ -104,7 +104,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                         holder.housetype.setText(type);
                         holder.address.setText(address);
                         holder.rent.setText(rent);
-                        Glide.with(context).load(image).into(holder.housePic);
+//                        Glide.with(context).load(image).into(holder.housePic);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) { }
@@ -130,9 +130,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             address = itemView.findViewById(R.id.favAddress);
             housetype = itemView.findViewById(R.id.houseTypeTv);
             beds = itemView.findViewById(R.id.bedTv);
-            //more = itemView.findViewById(R.id.moreBtn);
-
-
         }
     }
 }
