@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -111,6 +112,7 @@ public class PropertyContentsSeeker extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(PropertyContentsSeeker.this, ViewLocation.class);
+                Log.v("KAUSHIK", houseId);
                 intent1.putExtra("houseId", houseId);
                 intent1.putExtra("noOfRoom", noOfRoom);
                 intent1.putExtra("rentPerRoom", rentPerRoom);
