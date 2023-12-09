@@ -261,7 +261,7 @@ public class SeekerProfileActivity extends AppCompatActivity {
                 }
 
                 if(item.getItemId() == R.id.page_favorites) {
-                    Intent clickIntent2 = new Intent(SeekerProfileActivity.this, FavoritesActivity.class);
+                    Intent clickIntent2 = new Intent(SeekerProfileActivity.this, SeekerFavoriteActivity.class);
                     clickIntent2.putExtra("userKey", userKey);
                     startActivity(clickIntent2);
                     overridePendingTransition(0,0);

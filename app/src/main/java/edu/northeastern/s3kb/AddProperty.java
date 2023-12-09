@@ -76,25 +76,12 @@ public class AddProperty extends AppCompatActivity {
         setContentView(R.layout.activity_add_property);
 
         houseImg = findViewById(R.id.iv_houseImage);
-//        houseId = findViewById(R.id.et_houseId);
-        noOfRoom = findViewById(R.id.et_noOfRoom);
-        rentPerRoom = findViewById(R.id.et_rentPerRoom);
-        houseDescription = findViewById(R.id.et_houseDescription);
         baths = findViewById(R.id.et_bath);
-//      country = findViewById(R.id.et_country);
         add = findViewById(R.id.btn_addHouse);
-//        loc = findViewById(R.id.et_Loc);
         String cityD = getIntent().getExtras().getString("location");
-//        loc.setText(data);
-//        state = findViewById(R.id.et_state);
         String stateD = getIntent().getExtras().getString("state");
-//        state.setText(stateD);
-//        country = findViewById(R.id.et_country);
         String countryD = getIntent().getExtras().getString("country");
-//        country.setText(countryD);
-//        type = findViewById(R.id.et_type);
         String typeD = getIntent().getExtras().getString("type");
-//        type.setText(typeD);
         String addressD = getIntent().getExtras().getString("address");
 
 

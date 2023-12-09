@@ -311,7 +311,7 @@ public class PropertySeekerActivity extends AppCompatActivity {
                 }
 
                 if(item.getItemId() == R.id.page_favorites) {
-                    Intent clickIntent = new Intent(PropertySeekerActivity.this, FavoritesActivity.class);
+                    Intent clickIntent = new Intent(PropertySeekerActivity.this, SeekerFavoriteActivity.class);
                     clickIntent.putExtra("userKey", userKey);
                     startActivity(clickIntent);
                     overridePendingTransition(0,0);

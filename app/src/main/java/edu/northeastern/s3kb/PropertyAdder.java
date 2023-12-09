@@ -208,7 +208,7 @@ public class PropertyAdder extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Toast.makeText(PropertyAdder.this, "Property Added Successfully", Toast.LENGTH_SHORT).show();
                     imageString = "";
-                    Intent intent = new Intent(PropertyAdder.this, PropertyList.class);
+                    Intent intent = new Intent(PropertyAdder.this, Listings.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     finish();
                 } else {

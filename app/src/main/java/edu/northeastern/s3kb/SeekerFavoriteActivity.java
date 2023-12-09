@@ -2,6 +2,7 @@ package edu.northeastern.s3kb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -19,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FavoritesActivity extends AppCompatActivity {
+public class SeekerFavoriteActivity extends AppCompatActivity {
 
     private FavoritesAdapter adapter;
     private RecyclerView recyclerView;
@@ -37,14 +38,14 @@ public class FavoritesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorites);
+        setContentView(R.layout.activity_seeker_favorite);
 
         recyclerView = findViewById(R.id.favRecycler);
 
         userKey = getIntent().getStringExtra("userKey");
 
         favoriteProperties = new ArrayList<>();
-        adapter = new FavoritesAdapter(FavoritesActivity.this, favoriteProperties, userKey);
+        adapter = new FavoritesAdapter(SeekerFavoriteActivity.this, favoriteProperties, userKey);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -59,6 +60,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.page_favorites);
+
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -76,7 +78,7 @@ public class FavoritesActivity extends AppCompatActivity {
                 }
 
                 if(item.getItemId() == R.id.page_profile) {
-                    Intent clickIntent1 = new Intent(FavoritesActivity.this, SeekerProfileActivity.class);
+                    Intent clickIntent1 = new Intent(SeekerFavoriteActivity.this, SeekerProfileActivity.class);
                     clickIntent1.putExtra("userKey", userKey);
                     startActivity(clickIntent1);
                     overridePendingTransition(0,0);
@@ -115,7 +117,7 @@ public class FavoritesActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         super.onBackPressed();
-        Intent clickIntent1 = new Intent(FavoritesActivity.this, PropertySeekerActivity.class);
+        Intent clickIntent1 = new Intent(SeekerFavoriteActivity.this, PropertySeekerActivity.class);
         clickIntent1.putExtra("userKey", userKey);
         startActivity(clickIntent1);
         finish();
