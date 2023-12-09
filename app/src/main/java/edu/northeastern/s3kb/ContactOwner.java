@@ -84,7 +84,7 @@ public class ContactOwner extends AppCompatActivity {
                 if(j!= null){
                     gender = j;
                 }
-                body = String.format("Hey Next Rent Manager, %s I really loved your property at %s. I would like to submit an application for this property. %sThe following are my application details :%sFull Name : %s Gender : You can reach me at : %s Or email me at: %sThank you, Cheers", System.lineSeparator()+System.lineSeparator(), address, System.lineSeparator()+System.lineSeparator(), System.lineSeparator()+System.lineSeparator(),x +System.lineSeparator(), j+System.lineSeparator(), y+System.lineSeparator(), i+System.lineSeparator()+System.lineSeparator()); ;
+                body = String.format("Hey Local Life Manager, %s I really loved your property at %s. I would like to submit an application for this property. %sThe following are my application details :%sFull Name : %s Gender : You can reach me at : %s Or email me at: %sThank you, Cheers", System.lineSeparator()+System.lineSeparator(), address, System.lineSeparator()+System.lineSeparator(), System.lineSeparator()+System.lineSeparator(),x +System.lineSeparator(), j+System.lineSeparator(), y+System.lineSeparator(), i+System.lineSeparator()+System.lineSeparator()); ;
 
             }
 
