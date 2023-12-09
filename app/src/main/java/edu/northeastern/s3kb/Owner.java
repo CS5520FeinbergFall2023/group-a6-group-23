@@ -2,7 +2,7 @@ package edu.northeastern.s3kb;
 
 public class Owner {
 
-    private String username;
+    private String ownerName;
     private String address;
     private String unitNumber;
     private String propertyType;
@@ -14,23 +14,23 @@ public class Owner {
     private int zipcode;
     
 
-    public Owner(String username, String address, String unitNumber, String propertyType, String city, String state,
-                 int zipcode) {
-        this.username = username;
+    public Owner(String ownerName, String address, String unitNumber, String propertyType, String city, String state,
+                 int zipCode) {
+        this.ownerName = ownerName;
         this.address = address;
         this.unitNumber = unitNumber;
         this.propertyType = propertyType;
         this.city = city;
         this.state = state;
-        this.zipcode = zipcode;
+        this.zipcode = zipCode;
     }
 
     public String getUsername() {
-        return username;
+        return ownerName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public String getAddress() {
