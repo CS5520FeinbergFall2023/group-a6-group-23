@@ -39,6 +39,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class PropertySeekerActivity extends AppCompatActivity {
@@ -315,8 +317,12 @@ public class PropertySeekerActivity extends AppCompatActivity {
         String numberOfBedrooms = curUserPref.getNumberOfBedrooms();
         String articleNoOfRoom = article.getNoOfRoom();
 
+        Pattern pattern = Pattern.compile("\\D");
+        Matcher matcher = pattern.matcher(article.getRentPerRoom());
+        int price = Integer.parseInt(matcher.replaceAll(""));
+
         return (locations == null || locations.contains(article.getHouseLocation())) &&
-                (minPrice <= Integer.parseInt(article.getRentPerRoom()) && maxPrice >= Integer.parseInt(article.getRentPerRoom())) &&
+                (minPrice <= price && maxPrice >= price) &&
                 (typeOfHouse == null || typeOfHouse.contains(article.getType())) &&
                 isNumberOfBedroomsMatching(numberOfBedrooms, articleNoOfRoom);
     }
