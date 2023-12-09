@@ -150,60 +150,7 @@ public class PropertySeekerActivity extends AppCompatActivity {
 
                         Log.v("KAUSHIK", article.getAddress());
 
-                        if(!myFavoritePropertiesList.contains(article.getHouseId())){
-
-                            if(curUserPref == null){
-                                propertiesList.add(article);
-
-                                if (propertyRecyclerView != null && propertyRecyclerView.getAdapter() != null)
-                                    propertyRecyclerView.getAdapter().notifyItemInserted(propertyRecyclerView.getAdapter().getItemCount());
-
-                            } else {
-
-                                if (curUserPref.getLocations() == null || (curUserPref.getLocations().contains(article.getHouseLocation()))) {
-
-                                    if (curUserPref.getMinimumPrice() <= Integer.parseInt(article.getRentPerRoom())
-                                            && curUserPref.getMaximumPrice() >= Integer.parseInt(article.getRentPerRoom())) {
-
-                                        if (article.getType() == null || curUserPref.getTypeOfHouse() == null
-                                                || (curUserPref.getTypeOfHouse().contains(article.getType()))) {
-
-                                            boolean addProperty = false;
-                                            //number of bedrooms
-                                            if ("1".equalsIgnoreCase(curUserPref.getNumberOfBedrooms())) {
-                                                if (article.getNoOfRoom().equalsIgnoreCase("1")) {
-                                                    addProperty = true;
-                                                }
-
-                                            } else if ("2 - 3".equalsIgnoreCase(curUserPref.getNumberOfBedrooms())) {
-                                                if (article.getNoOfRoom().equalsIgnoreCase("2")
-                                                        || article.getNoOfRoom().equalsIgnoreCase("3")) {
-                                                    addProperty = true;
-                                                }
-
-                                            } else if ("> 4".equalsIgnoreCase(curUserPref.getNumberOfBedrooms())) {
-                                                if (Integer.parseInt(article.getNoOfRoom()) >= 4) {
-                                                    addProperty = true;
-                                                }
-                                            } else {
-                                                addProperty = true;
-                                            }
-
-                                            if (addProperty) {
-                                                propertiesList.add(article);
-
-                                                if (propertyRecyclerView != null && propertyRecyclerView.getAdapter() != null)
-                                                    propertyRecyclerView.getAdapter().notifyItemInserted(propertyRecyclerView.getAdapter().getItemCount());
-                                            }
-
-                                        }
-
-                                    }
-                                }
-
-                            }
-
-                        }
+                        filter(article);
 
                     }
                 }
@@ -348,4 +295,46 @@ public class PropertySeekerActivity extends AppCompatActivity {
         finish();
     }
 
+    private void filter(Property article) {
+        if (!myFavoritePropertiesList.contains(article.getHouseId())) {
+            if (curUserPref == null || isArticleMatchingPreferences(article)) {
+                propertiesList.add(article);
+                notifyAdapterItemInserted();
+            }
+        }
+    }
+    private boolean isArticleMatchingPreferences(Property article) {
+        if (curUserPref == null) {
+            return true;
+        }
+
+        List<String> locations = curUserPref.getLocations();
+        int minPrice = curUserPref.getMinimumPrice();
+        int maxPrice = curUserPref.getMaximumPrice();
+        List<String> typeOfHouse = curUserPref.getTypeOfHouse();
+        String numberOfBedrooms = curUserPref.getNumberOfBedrooms();
+        String articleNoOfRoom = article.getNoOfRoom();
+
+        return (locations == null || locations.contains(article.getHouseLocation())) &&
+                (minPrice <= Integer.parseInt(article.getRentPerRoom()) && maxPrice >= Integer.parseInt(article.getRentPerRoom())) &&
+                (typeOfHouse == null || typeOfHouse.contains(article.getType())) &&
+                isNumberOfBedroomsMatching(numberOfBedrooms, articleNoOfRoom);
+    }
+
+    private boolean isNumberOfBedroomsMatching(String numberOfBedrooms, String articleNoOfRoom) {
+        if ("1".equalsIgnoreCase(numberOfBedrooms)) {
+            return articleNoOfRoom.equalsIgnoreCase("1");
+        } else if ("2 - 3".equalsIgnoreCase(numberOfBedrooms)) {
+            return articleNoOfRoom.equalsIgnoreCase("2") || articleNoOfRoom.equalsIgnoreCase("3");
+        } else if ("> 4".equalsIgnoreCase(numberOfBedrooms)) {
+            return Integer.parseInt(articleNoOfRoom) >= 4;
+        }
+        return true;
+    }
+
+    private void notifyAdapterItemInserted() {
+        if (propertyRecyclerView != null && propertyRecyclerView.getAdapter() != null) {
+            propertyRecyclerView.getAdapter().notifyItemInserted(propertyRecyclerView.getAdapter().getItemCount());
+        }
+    }
 }
