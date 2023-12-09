@@ -30,17 +30,16 @@ import java.util.regex.Pattern;
  */
 public class OwnerLoginFragment extends Fragment {
 
-    TextView register;
-    Button login;
     EditText email, password;
+    Button login;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
-    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
+    String patternRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
             "[a-zA-Z0-9_+&*-]+)*@" +
             "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
             "A-Z]{2,7}$";
-    Pattern pattern = Pattern.compile(emailRegex);
+    Pattern pattern = Pattern.compile(patternRegex);
     ProgressDialog progressDialog;
 
     public OwnerLoginFragment() {
@@ -56,9 +55,9 @@ public class OwnerLoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_owner_login, container, false);
-        email = view.findViewById(R.id.et_email);
-        password = view.findViewById(R.id.et_password);
-        login = view.findViewById(R.id.btn_login);
+        email = view.findViewById(R.id.email);
+        password = view.findViewById(R.id.password);
+        login = view.findViewById(R.id.login);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         progressDialog = new ProgressDialog(requireContext());
@@ -75,7 +74,6 @@ public class OwnerLoginFragment extends Fragment {
     private void login() {
         String emailStr = this.email.getText().toString();
         String passwordStr = this.password.getText().toString();
-
         if (emailStr.isEmpty()) {
             this.email.setError("Please Enter Email");
         } else if (!pattern.matcher(emailStr).matches()) {
@@ -83,9 +81,8 @@ public class OwnerLoginFragment extends Fragment {
         } else if (passwordStr.isEmpty()) {
             this.password.setError("Please Enter Password");
         }
-        //TODO
-        else if (passwordStr.length() < 6) {
-            this.password.setError("Password should be more than six characters");
+        else if (passwordStr.length() < 8) {
+            this.password.setError("Password should be more than eight characters");
         } else {
             progressDialog.setTitle("Logging In");
             progressDialog.setCanceledOnTouchOutside(false);
@@ -93,10 +90,10 @@ public class OwnerLoginFragment extends Fragment {
 
             mAuth.signInWithEmailAndPassword(emailStr, passwordStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
+                public void onComplete(@NonNull Task<AuthResult> event) {
+                    if (event.isSuccessful()) {
                         progressDialog.dismiss();
-                        navigateOwnerToHomePage();
+                        goToListings();
                         Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                     } else {
                         progressDialog.dismiss();
@@ -107,8 +104,7 @@ public class OwnerLoginFragment extends Fragment {
         }
     }
 
-    private void navigateOwnerToHomePage() {
-        startActivity(new Intent(requireContext(), LocationFragment.class));
-
+    private void goToListings() {
+        startActivity(new Intent(requireContext(), Listings.class));
     }
 }

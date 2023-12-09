@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
         <item
             android:id="@+id/nav_restaurant"
-            android:title="Restaurant Nearby"
+            android:title="Diners Nearby"
             android:icon="@drawable/ic_launcher_s3kb_location_foreground"/>
         <item
             android:id="@+id/nav_seeker"
@@ -10,7 +10,7 @@
             android:icon="@drawable/ic_launcher_s3kb_home_foreground"/>
         <item
             android:id="@+id/nav_owner"
-            android:title="Owner Registration"
+            android:title="Owner"
             android:icon="@drawable/ic_launcher_s3kb_owner_foreground"/>
         <item
             android:id="@+id/nav_login"

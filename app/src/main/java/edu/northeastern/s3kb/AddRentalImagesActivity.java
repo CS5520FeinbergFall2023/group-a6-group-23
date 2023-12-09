@@ -3,6 +3,7 @@ package edu.northeastern.s3kb;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,7 +52,7 @@ public class AddRentalImagesActivity extends AppCompatActivity {
 
                 assert firebaseUser != null;
                 String userId = firebaseUser.getUid();
-
+                Log.v("KAUSHIK", userId);
                 databaseReference = FirebaseDatabase.getInstance().getReference().child("houses").child(userId);
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put("houseId", houseId);
@@ -65,6 +66,7 @@ public class AddRentalImagesActivity extends AppCompatActivity {
                 hashMap.put("type",type);
                 hashMap.put("baths",baths);
                 hashMap.put("address",address);
+                Log.v("KAUSHIK", hashMap+"");
                 databaseReference.child(houseId).setValue(hashMap);
             }
         });
