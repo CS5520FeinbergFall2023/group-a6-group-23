@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -37,6 +38,7 @@ public class ProjectStarterPageActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
     }
     OwnerRegisterFragment ownerRegisterFragment = new OwnerRegisterFragment();
+    OwnerLoginFragment ownerLoginFragment = new OwnerLoginFragment();
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
@@ -59,6 +61,13 @@ public class ProjectStarterPageActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flFragment, ownerRegisterFragment)
+                    .commit();
+            return true;
+        }
+        if(item.getItemId() == R.id.nav_login) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.flFragment, ownerLoginFragment)
                     .commit();
             return true;
         }
