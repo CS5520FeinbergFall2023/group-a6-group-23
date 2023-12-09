@@ -2,9 +2,9 @@ package edu.northeastern.s3kb;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -14,63 +14,61 @@ public class ProjectStarterPageActivity extends AppCompatActivity
         .OnNavigationItemSelectedListener {
 
     BottomNavigationView bottomNavigationView;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_starter_page);
-
-        bottomNavigationView
-                = findViewById(R.id.bottomNavigationView);
-
-        if(savedInstanceState == null) {
-            bottomNavigationView
-                    .setOnNavigationItemSelectedListener(this);
-            bottomNavigationView.setSelectedItemId(R.id.nav_restaurant);
-        }
-    }
     LocationFragment locationFragment = new LocationFragment();
     SeekerFragment seeker = new SeekerFragment();
     OwnerRegisterFragment ownerRegisterFragment = new OwnerRegisterFragment();
+    OwnerLoginFragment ownerLoginFragment = new OwnerLoginFragment();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_project_starter_page);
+
+        initializeBottomNavigationView();
+
+        if(savedInstanceState == null) {
+            setNavigationItemSelected(R.id.nav_restaurant);
+        }
+    }
+
+    private void initializeBottomNavigationView() {
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+    }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean("Rotated", true);
         super.onSaveInstanceState(outState);
     }
-    OwnerLoginFragment ownerLoginFragment = new OwnerLoginFragment();
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item)
-    {
-        if(item.getItemId() == R.id.nav_restaurant) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.flFragment, locationFragment)
-                    .commit();
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return setNavigationItemSelected(item.getItemId());
+    }
+
+    private boolean setNavigationItemSelected(int itemId) {
+        if (itemId == R.id.nav_restaurant) {
+            replaceFragment(locationFragment);
             return true;
-        }
-        if(item.getItemId() == R.id.nav_seeker) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.flFragment, seeker)
-                    .commit();
+        } else if (itemId == R.id.nav_seeker) {
+            replaceFragment(seeker);
             return true;
-        }
-        if(item.getItemId() == R.id.nav_owner) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.flFragment, ownerRegisterFragment)
-                    .commit();
+        } else if (itemId == R.id.nav_owner) {
+            replaceFragment(ownerRegisterFragment);
             return true;
-        }
-        if(item.getItemId() == R.id.nav_login) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.flFragment, ownerLoginFragment)
-                    .commit();
+        } else if (itemId == R.id.nav_login) {
+            replaceFragment(ownerLoginFragment);
             return true;
+        } else {
+            return false;
         }
-        return false;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.flFragment, fragment)
+                .commit();
     }
 }

@@ -62,45 +62,41 @@ public class PropertySeekerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_seeker);
 
-        propertiesList = new ArrayList<>();
+        initializeViews();
+        retrieveIntentData();
+        setupDatabaseReferences();
+        setupRecyclerView();
+        setupItemTouchHelper();
+        setupBottomNavigationView();
+        showSnackbar();
 
+        fetchFavorites();
+        fetchUserPreferences();
+        fetchProperties();
+    }
+
+    private void initializeViews() {
         propertyRecyclerView = findViewById(R.id.property_list_recycler_view);
+        emptyView = findViewById(R.id.empty_view);
+    }
 
-        emptyView = (ImageView) findViewById(R.id.empty_view);
-
-        horizontalLayout = new LinearLayoutManager(
-                PropertySeekerActivity.this,
-                LinearLayoutManager.HORIZONTAL,
-                false);
-        propertyRecyclerView.setLayoutManager(horizontalLayout);
-        PropertyListAdapterSeeker propertyListAdapterSeeker =
-                new PropertyListAdapterSeeker(this, propertiesList);
-        propertyRecyclerView.setAdapter(propertyListAdapterSeeker);
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,
-                DividerItemDecoration.HORIZONTAL);
-
-
-        propertyRecyclerView.addItemDecoration(dividerItemDecoration);
-
+    private void retrieveIntentData() {
         bundle = getIntent().getExtras();
         if(bundle != null) {
             userKey = bundle.getString("userKey");
         }
-        firebaseDatabase = FirebaseDatabase.getInstance();
+    }
 
-        databaseReference = firebaseDatabase.getReference("");
-
-        myFavoritePropertiesList = new HashSet<>();
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> snapshotIterator = dataSnapshot.child("seekers").child(userKey).child("favorites").getChildren();
-                Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
-                while (iterator.hasNext()) {
-                    DataSnapshot next = (DataSnapshot) iterator.next();
-                    myFavoritePropertiesList.add(next.child("propID").getValue().toString());
+        private void fetchFavorites() {
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> snapshotIterator = dataSnapshot.child("seekers").child(userKey).child("favorites").getChildren();
+                    Iterator<DataSnapshot> iterator = snapshotIterator.iterator();
+                    while (iterator.hasNext()) {
+                        DataSnapshot next = (DataSnapshot) iterator.next();
+                        myFavoritePropertiesList.add(next.child("propID").getValue().toString());
+                    }
                 }
             }
             @Override
@@ -152,140 +148,171 @@ public class PropertySeekerActivity extends AppCompatActivity {
 
                         filter(article);
 
+
                     }
                 }
-                if (propertiesList.isEmpty()) {
-                    propertyRecyclerView.setVisibility(View.GONE);
-                    emptyView.setVisibility(View.VISIBLE);
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.v("KAUSHIK","The read failed: " + databaseError.getCode());
+                    System.out.println("The read failed: " + databaseError.getCode());
                 }
-                else {
-                    propertyRecyclerView.setVisibility(View.VISIBLE);
-                    emptyView.setVisibility(View.GONE);
+            });
+        }
+
+        private void setupDatabaseReferences() {
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference("");
+            properties = databaseReference.child("houses");
+        }
+
+        private void setupRecyclerView() {
+            propertiesList = new ArrayList<>();
+            horizontalLayout = new LinearLayoutManager(
+                    PropertySeekerActivity.this,
+                    LinearLayoutManager.HORIZONTAL,
+                    false);
+            propertyRecyclerView.setLayoutManager(horizontalLayout);
+            PropertyListAdapterSeeker propertyListAdapterSeeker =
+                    new PropertyListAdapterSeeker(this, propertiesList);
+            propertyRecyclerView.setAdapter(propertyListAdapterSeeker);
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,
+                    DividerItemDecoration.HORIZONTAL);
+            propertyRecyclerView.addItemDecoration(dividerItemDecoration);
+        }
+
+        private void setupItemTouchHelper() {
+            ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.UP | ItemTouchHelper.DOWN) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.v("KAUSHIK","The read failed: " + databaseError.getCode());
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    if(direction == ItemTouchHelper.DOWN){
+                        Toast.makeText(PropertySeekerActivity.this, "Added to favorites list",
+                                Toast.LENGTH_SHORT).show();
 
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.UP | ItemTouchHelper.DOWN) {
+                        String propertyID = propertiesList.get(viewHolder.getBindingAdapterPosition()).getHouseId();
+                        String ownerID = propertiesList.get(viewHolder.getBindingAdapterPosition()).getUserId();
 
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                if(direction == ItemTouchHelper.DOWN){
-                    Toast.makeText(PropertySeekerActivity.this, "Added to favorites list",
-                            Toast.LENGTH_SHORT).show();
-
-                    String propertyID = propertiesList.get(viewHolder.getBindingAdapterPosition()).getHouseId();
-                    String ownerID = propertiesList.get(viewHolder.getBindingAdapterPosition()).getUserId();
-
-                    HashMap<String, String> favMap = new HashMap<>();
-                    favMap.put("propID",propertyID);
-                    favMap.put("owner", ownerID);
+                        HashMap<String, String> favMap = new HashMap<>();
+                        favMap.put("propID",propertyID);
+                        favMap.put("owner", ownerID);
 
 
-                    DatabaseReference db =databaseReference.child("seekers").child(userKey).child("favorites").push();
+                        DatabaseReference db =databaseReference.child("seekers").child(userKey).child("favorites").push();
 
-                    db.setValue(favMap).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(PropertySeekerActivity.this, "Could not add to favorites", Toast.LENGTH_SHORT).show();
+                        db.setValue(favMap).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(PropertySeekerActivity.this, "Could not add to favorites", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        databaseReference.child("seekers").child(userKey).child("propPoints").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                propPoints = snapshot.getValue(Integer.class);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                        propPoints++;
+                        databaseReference.child("seekers").child(userKey).child("propPoints").setValue(propPoints);
+
+                    }
+                    else if (direction == ItemTouchHelper.UP){
+                        Toast.makeText(PropertySeekerActivity.this, "Property removed.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    //remove from list
+                    propertiesList.remove(viewHolder.getBindingAdapterPosition());
+                    if(propertyRecyclerView != null && propertyRecyclerView.getAdapter() != null) {
+                        propertyRecyclerView.getAdapter().notifyItemRemoved(propertyRecyclerView.getAdapter().getItemCount());
+                        propertyRecyclerView.getAdapter().notifyItemRangeChanged(viewHolder.getBindingAdapterPosition(), propertyRecyclerView.getAdapter().getItemCount());
+                    }
+                }
+            };
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+            itemTouchHelper.attachToRecyclerView(propertyRecyclerView);
+        }
+
+
+        private void setupChildEventListener() {
+            properties.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    // Handle child added
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    // Handle child changed
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                    // Handle child removed
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    // Handle child moved
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle error
+                }
+            });
+        }
+
+        private void setupBottomNavigationView() {
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+            bottomNavigationView.setSelectedItemId(R.id.page_home);
+            bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    try{
+                        if(item.getItemId() == R.id.page_home) {
+                            return true;
                         }
-                    });
-                    databaseReference.child("seekers").child(userKey).child("propPoints").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            propPoints = snapshot.getValue(Integer.class);
+
+                        if(item.getItemId() == R.id.page_favorites) {
+                            Intent clickIntent = new Intent(PropertySeekerActivity.this, SeekerFavoriteActivity.class);
+                            clickIntent.putExtra("userKey", userKey);
+                            startActivity(clickIntent);
+                            overridePendingTransition(0,0);
+                            return true;
                         }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
+                        if(item.getItemId() == R.id.page_profile) {
+                            Intent clickIntent4 = new Intent(PropertySeekerActivity.this, SeekerProfileActivity.class);
+                            clickIntent4.putExtra("userKey", userKey);
+                            startActivity(clickIntent4);
+                            return true;
                         }
-                    });
-                    propPoints++;
-                    databaseReference.child("seekers").child(userKey).child("propPoints").setValue(propPoints);
-
+                    }catch(Exception ex) {
+                        Log.v("KAUSHIK", ex.getMessage() );
+                    }
+                    return false;
                 }
-                else if (direction == ItemTouchHelper.UP){
-                    Toast.makeText(PropertySeekerActivity.this, "Property removed.",
-                            Toast.LENGTH_SHORT).show();
-                }
-                //remove from list
-                propertiesList.remove(viewHolder.getBindingAdapterPosition());
-                if(propertyRecyclerView != null && propertyRecyclerView.getAdapter() != null) {
-                    propertyRecyclerView.getAdapter().notifyItemRemoved(propertyRecyclerView.getAdapter().getItemCount());
-                    propertyRecyclerView.getAdapter().notifyItemRangeChanged(viewHolder.getBindingAdapterPosition(), propertyRecyclerView.getAdapter().getItemCount());
-                }
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(propertyRecyclerView);
+            });
+        }
 
-        properties = databaseReference.child("houses");
-        properties.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.page_home);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                try{
-                if(item.getItemId() == R.id.page_home) {
-                    return true;
-                }
-
-                if(item.getItemId() == R.id.page_favorites) {
-                    Intent clickIntent = new Intent(PropertySeekerActivity.this, SeekerFavoriteActivity.class);
-                    clickIntent.putExtra("userKey", userKey);
-                    startActivity(clickIntent);
-                    overridePendingTransition(0,0);
-                    return true;
-                }
-
-                if(item.getItemId() == R.id.page_profile) {
-                    Intent clickIntent4 = new Intent(PropertySeekerActivity.this, SeekerProfileActivity.class);
-                    clickIntent4.putExtra("userKey", userKey);
-                    startActivity(clickIntent4);
-                    return true;
-                }
-            }catch(Exception ex) {
-                Log.v("KAUSHIK", ex.getMessage() );
-                }
-                return false;
-            }
-        });
-        Snackbar snack = Snackbar.make(findViewById(android.R.id.content), "Swipe down on property to add to favorites, swipe up to remove", Snackbar.LENGTH_LONG);
-        View view = snack.getView();
-        FrameLayout.LayoutParams params =(FrameLayout.LayoutParams)view.getLayoutParams();
-        params.gravity = Gravity.TOP;
-        view.setLayoutParams(params);
-        snack.show();
-
-
-    }
+        private void showSnackbar() {
+            Snackbar snack = Snackbar.make(findViewById(android.R.id.content), "Swipe down on property to add to favorites, swipe up to remove", Snackbar.LENGTH_LONG);
+            View view = snack.getView();
+            FrameLayout.LayoutParams params =(FrameLayout.LayoutParams)view.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            view.setLayoutParams(params);
+            snack.show();
+        }
+        
 
     @Override
     public void onBackPressed()
