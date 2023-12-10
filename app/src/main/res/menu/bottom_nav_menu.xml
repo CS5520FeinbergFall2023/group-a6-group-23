@@ -2,19 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
         <item
             android:id="@+id/nav_restaurant"
-            android:title="Restaurant"
-            android:icon="@drawable/ic_launcher_s3kb_location_foreground"
-            android:textSize="10sp"/>
-
+            android:title="Diners Nearby"
+            android:icon="@drawable/ic_launcher_s3kb_location_foreground"/>
         <item
             android:id="@+id/nav_seeker"
             android:title="Seeker"
             android:icon="@drawable/ic_launcher_s3kb_home_foreground"/>
         <item
             android:id="@+id/nav_owner"
-            android:title="Owner Register"
-            android:icon="@drawable/ic_launcher_s3kb_owner_foreground"
-            android:textSize="10sp"/>
+            android:title="Owner"
+            android:icon="@drawable/ic_launcher_s3kb_owner_foreground"/>
         <item
             android:id="@+id/nav_login"
             android:title="Owner Login"

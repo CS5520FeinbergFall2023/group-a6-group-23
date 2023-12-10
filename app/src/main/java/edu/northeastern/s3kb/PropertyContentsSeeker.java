@@ -1,8 +1,10 @@
 package edu.northeastern.s3kb;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -111,18 +113,16 @@ public class PropertyContentsSeeker extends AppCompatActivity {
         bLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(PropertyContentsSeeker.this, ViewLocation.class);
-                Log.v("KAUSHIK", houseId);
-                intent1.putExtra("houseId", houseId);
-                intent1.putExtra("noOfRoom", noOfRoom);
-                intent1.putExtra("rentPerRoom", rentPerRoom);
-                intent1.putExtra("houseDescription", houseDescription);
-                intent1.putExtra("houseLocation", houseLocation);
-                lat = String.valueOf(latitude);
-                lon = String.valueOf(longitude);
-                intent1.putExtra("latitude", lat);
-                intent1.putExtra("longitude", lon);
-                startActivity(intent1);
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+
+                PackageManager packageManager = getPackageManager();
+                if (mapIntent.resolveActivity(packageManager) != null) {
+                    startActivity(mapIntent);
+                } else {
+                    Log.v("TESTING","Google Maps not istalled!");
+                }
             }
         });
 

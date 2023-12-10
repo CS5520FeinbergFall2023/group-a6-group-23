@@ -19,88 +19,72 @@
         android:theme="@style/Theme.S3KB"
         tools:targetApi="31">
         <activity
-            android:name=".SeekerFavoriteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PropertySeekerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BasicQuestionsActivity"
-            android:exported="false" />
-        <activity
             android:name=".AddRentalImagesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AddRentalActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PropertySeekerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BasicQuestionsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProjectStarterPageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SeekerProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ViewLocation"
-            android:exported="false" />
-        <activity
-            android:name=".PropertyContentsSeeker"
-            android:exported="false" />
-        <activity
-            android:name=".PropertyContents"
-            android:exported="false" />
-        <activity
-            android:name=".Listings"
-            android:exported="false" />
-        <activity
-            android:name=".AddProperty"
-            android:exported="false" />
-        <activity
-            android:name=".HouseQuestionsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UserAvatarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AddPropertyAddress"
-            android:exported="false" />
-        <activity
-            android:name=".ContactOwner"
-            android:exported="false" />
-        <activity
-            android:name=".AboutMe"
-            android:exported="false" />
-        <activity
-            android:name=".StickersHistory"
-            android:exported="false" />
-        <activity
-            android:name=".StickItToEm"
-            android:exported="false" />
-        <activity
-            android:name=".LoginA8Activity"
-            android:exported="false" />
-        <activity
-            android:name=".InterbankTransactionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".FinancialInclusionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SummaryTransactionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BihTradingActivities"
             android:exported="false" />
         <activity
             android:name=".BihHeatMapActivity"
             android:exported="false" />
         <activity
+            android:name=".BihTradingActivities"
+            android:exported="false" />
+        <activity
+            android:name=".ContactOwner"
+            android:exported="false" />
+        <activity
             android:name=".FinancialAndCapitalMarketsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".FinancialInclusionActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".HouseQuestionsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".InterbankTransactionActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".LoginA8Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ProjectStarterPageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PropertyContents"
+            android:exported="false" />
+        <activity
+            android:name=".PropertySeekerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SeekerFavoriteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SeekerProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".PropertyContentsSeeker"
+            android:exported="false" />
+        <activity
+            android:name=".Listings"
+            android:exported="false" />
+        <activity
+            android:name=".StickersHistory"
+            android:exported="false" />
+        <activity
+            android:name=".AddRentalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SummaryTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutMe"
+            android:exported="false" />
+        <activity
+            android:name=".StickItToEm"
             android:exported="false" />
         <activity
             android:name=".AtYourServiceActivity"
