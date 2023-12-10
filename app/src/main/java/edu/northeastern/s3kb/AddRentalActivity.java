@@ -23,7 +23,6 @@ public class AddRentalActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private EditText addressEditText;
-    private EditText aptUnitNumberEditText;
     private EditText stateEditText;
     private EditText countryEditText;
     private EditText cityEditText;
@@ -52,7 +51,7 @@ public class AddRentalActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String address = String.format("%s, Unit %s", addressEditText.getText().toString(), aptUnitNumberEditText.getText().toString());
+                String address = addressEditText.getText().toString();
                 String propertyTpe = propertyTypeSpinner.getSelectedItem().toString();
                 String city = cityEditText.getText().toString();
                 String state = stateEditText.getText().toString();
