@@ -45,7 +45,6 @@ public class AddRentalActivity extends AppCompatActivity {
         propertyTypeSpinner.setAdapter(adapter);
 
         addressEditText = findViewById(R.id.addressEt);
-        aptUnitNumberEditText = findViewById(R.id.aptEt);
         stateEditText = findViewById(R.id.stateEt);
         cityEditText = findViewById(R.id.cityEt);
         countryEditText = findViewById(R.id.countryEt);
@@ -67,17 +66,6 @@ public class AddRentalActivity extends AppCompatActivity {
                 i.putExtra("type", propertyTpe);
                 startActivity(i);
                 finish();
-//                databaseReference.child(username).get().addOnCompleteListener((node)->{
-//                    Map<String, Object> userMap = (Map<String, Object>) node.getResult().getValue();
-//                    Owner owner = null;
-//                    owner = new Owner(username, address, aptUnitNumber, propertyTpe, city, state, zipcode);
-//                    databaseReference.child(username).setValue(owner);
-
-//                    Intent clickIntent = new Intent(LoginA8Activity.this, StickItToEm.class);
-//                    clickIntent.putExtra("currentUserName", userName);
-//                    clickIntent.putExtra("lastVisited", date.toString());
-//                    startActivity(clickIntent);
-//                });
             }
         });
 
