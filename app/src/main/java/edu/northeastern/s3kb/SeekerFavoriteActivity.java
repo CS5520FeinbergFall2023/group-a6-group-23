@@ -66,7 +66,6 @@ public class SeekerFavoriteActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         favoriteProperties.clear();
                         for (DataSnapshot ds: snapshot.getChildren()){
-                            Log.v("KAUSHIK", ds.child("owner").getValue().toString());
                             favProperty prop = new favProperty();
                             prop.setHouseID(ds.child("propID").getValue().toString());
                             prop.setUserID(ds.child("owner").getValue().toString());

@@ -82,7 +82,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                         String address = snapshot.child("houseLocation").getValue().toString();
                         String state = snapshot.child("state").getValue().toString();
                         String country = snapshot.child("country").getValue().toString();
-//                        String image = snapshot.child("houseImage").getValue().toString();
                         String description = snapshot.child("houseDescription").getValue().toString();
                         String type = snapshot.child("type").getValue().toString();
                         String room = snapshot.child("noOfRoom").getValue().toString();
@@ -91,7 +90,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
                         prop.setCountry(country);
                         prop.setDescription(description);
-//                        prop.setImage(image);
                         prop.setRent(rent);
                         prop.setLocation(address);
                         prop.setRooms(room);
@@ -104,7 +102,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
                         holder.housetype.setText(type);
                         holder.address.setText(address);
                         holder.rent.setText(rent);
-//                        Glide.with(context).load(image).into(holder.housePic);
+                        if(snapshot.child("houseImage").getValue() != null) {
+                            String image = snapshot.child("houseImage").getValue().toString();
+                            prop.setImage(image);
+                            Glide.with(context).load(image).into(holder.housePic);
+                        } else {
+                            prop.setImage("https://firebasestorage.googleapis.com/v0/b/s3kb-b07f0.appspot.com/o/Uploads%2Fhouse.jpeg?alt=media&token=2377f3e6-b312-4adc-9b5d-3f18b6443827");
+                            Glide.with(context).load("https://firebasestorage.googleapis.com/v0/b/s3kb-b07f0.appspot.com/o/Uploads%2Fhouse.jpeg?alt=media&token=2377f3e6-b312-4adc-9b5d-3f18b6443827").into(holder.housePic);
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) { }
