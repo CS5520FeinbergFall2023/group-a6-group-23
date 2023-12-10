@@ -51,7 +51,7 @@ public class AddRentalActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String address = addressEditText.getText().toString();
+                String address = String.format("%s, Unit %s", addressEditText.getText().toString(), aptUnitNumberEditText.getText().toString());
                 String propertyTpe = propertyTypeSpinner.getSelectedItem().toString();
                 String city = cityEditText.getText().toString();
                 String state = stateEditText.getText().toString();
@@ -65,17 +65,6 @@ public class AddRentalActivity extends AppCompatActivity {
                 i.putExtra("type", propertyTpe);
                 startActivity(i);
                 finish();
-//                databaseReference.child(username).get().addOnCompleteListener((node)->{
-//                    Map<String, Object> userMap = (Map<String, Object>) node.getResult().getValue();
-//                    Owner owner = null;
-//                    owner = new Owner(username, address, aptUnitNumber, propertyTpe, city, state, zipcode);
-//                    databaseReference.child(username).setValue(owner);
-
-//                    Intent clickIntent = new Intent(LoginA8Activity.this, StickItToEm.class);
-//                    clickIntent.putExtra("currentUserName", userName);
-//                    clickIntent.putExtra("lastVisited", date.toString());
-//                    startActivity(clickIntent);
-//                });
             }
         });
 

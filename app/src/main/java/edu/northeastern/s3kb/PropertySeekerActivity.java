@@ -16,12 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,6 +36,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class PropertySeekerActivity extends AppCompatActivity {
@@ -315,8 +314,12 @@ public class PropertySeekerActivity extends AppCompatActivity {
         String numberOfBedrooms = curUserPref.getNumberOfBedrooms();
         String articleNoOfRoom = article.getNoOfRoom();
 
+        Pattern pattern = Pattern.compile("\\D");
+        Matcher matcher = pattern.matcher(article.getRentPerRoom());
+        int price = Integer.parseInt(matcher.replaceAll(""));
+
         return (locations == null || locations.contains(article.getHouseLocation())) &&
-                (minPrice <= Integer.parseInt(article.getRentPerRoom()) && maxPrice >= Integer.parseInt(article.getRentPerRoom())) &&
+                (minPrice <= price && maxPrice >= price) &&
                 (typeOfHouse == null || typeOfHouse.contains(article.getType())) &&
                 isNumberOfBedroomsMatching(numberOfBedrooms, articleNoOfRoom);
     }

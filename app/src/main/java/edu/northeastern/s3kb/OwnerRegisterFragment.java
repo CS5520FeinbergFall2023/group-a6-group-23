@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,27 +64,26 @@ public class OwnerRegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_owner_register, container, false);
-        username = view.findViewById(R.id.et_username);
-        email = view.findViewById(R.id.et_email);
-        password = view.findViewById(R.id.et_password);
-        confirmPassword = view.findViewById(R.id.et_confirmPassword);
-        register = view.findViewById(R.id.btn_register);
-        phoneNumber = view.findViewById(R.id.et_phoneNumber);
+        progressDialog = new ProgressDialog(requireContext());
+        username = view.findViewById(R.id.userName);
+        email = view.findViewById(R.id.email);
+        password = view.findViewById(R.id.password);
+        confirmPassword = view.findViewById(R.id.confirmPassword);
+        register = view.findViewById(R.id.register);
+        phoneNumber = view.findViewById(R.id.phoneNo);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-
-        progressDialog = new ProgressDialog(requireContext());
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                authenticate();
+                validateInput();
             }
         });
         return view;
     }
 
-    private void authenticate() {
+    private void validateInput() {
         String emailStr = this.email.getText().toString();
         String passwordStr = this.password.getText().toString();
         String confirmPasswordStr = this.confirmPassword.getText().toString();
@@ -101,8 +99,8 @@ public class OwnerRegisterFragment extends Fragment {
         }else if (passwordStr.isEmpty()) {
             this.password.setError("Please Enter Password");
         }
-        else if (passwordStr.length() < 6) {
-            this.password.setError("Password should be more than six characters");
+        else if (passwordStr.length() < 8) {
+            this.password.setError("Password should be more than eight characters");
         } else if (!confirmPasswordStr.equals(passwordStr)) {
             this.confirmPassword.setError("Password doesn't matches");
         } else {
@@ -136,8 +134,6 @@ public class OwnerRegisterFragment extends Fragment {
                                 }
                             }
                         });
-
-
                         Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
                     } else {
                         progressDialog.dismiss();
@@ -145,10 +141,9 @@ public class OwnerRegisterFragment extends Fragment {
                             throw Objects.requireNonNull(task.getException());
                         } catch(FirebaseAuthUserCollisionException e) {
 
-                            Toast.makeText(requireContext(), "Email already taken!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "Enter a different email", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Log.v("KAUSHIK", e.getMessage());
                         }
                     }
                 }
@@ -160,6 +155,5 @@ public class OwnerRegisterFragment extends Fragment {
         Intent intent = new Intent(requireContext(), AddRentalActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
     }
 }

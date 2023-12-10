@@ -20,7 +20,7 @@
         android:id="@+id/popupEditTextTextLocation"
         android:layout_width="287dp"
         android:layout_height="54dp"
-        android:background="@drawable/custom_edit_text"
+        android:background="@drawable/edit_data"
         android:ems="10"
         android:hint="City"
         android:inputType="textPersonName"
