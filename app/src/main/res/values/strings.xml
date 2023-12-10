@@ -32,4 +32,6 @@
         <item>$4500</item>
         <item>$5000</item>
     </string-array>
+    <string name="channel_name">Reminder Channel</string>
+    <string name="channel_description">Channel for App Reminder</string>
 </resources>
