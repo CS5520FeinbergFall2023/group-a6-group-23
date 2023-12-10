@@ -39,7 +39,7 @@ public class AddRentalActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("owner");
 
         propertyTypeSpinner = findViewById(R.id.propertySpinner);
-        String[] propertyTypeItems = {"Apartment", "House/Villa", "Condo"};
+        String[] propertyTypeItems = {"Apartment", "House/Villa", "Condo", "Duplex"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, propertyTypeItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         propertyTypeSpinner.setAdapter(adapter);
