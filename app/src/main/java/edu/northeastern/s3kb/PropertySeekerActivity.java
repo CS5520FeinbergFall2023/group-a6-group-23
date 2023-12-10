@@ -104,7 +104,6 @@ public class PropertySeekerActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.v("KAUSHIK","The read failed: " + error.getCode());
                 System.out.println("The read failed: " + error.getCode());
             }
         });
@@ -117,7 +116,6 @@ public class PropertySeekerActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.v("KAUSHIK","The read failed: " + error.getCode());
                 System.out.println("The read failed: " + error.getCode());
             }
         });
@@ -147,8 +145,6 @@ public class PropertySeekerActivity extends AppCompatActivity {
                                 String.valueOf(next.child("type").getValue()),String.valueOf(next.child("baths").getValue()),
                                 String.valueOf(next.child("address").getValue()));
 
-                        Log.v("KAUSHIK", article.getAddress());
-
                         filter(article);
 
                     }
@@ -165,7 +161,6 @@ public class PropertySeekerActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.v("KAUSHIK","The read failed: " + databaseError.getCode());
                 System.out.println("The read failed: " + databaseError.getCode());
             }
         });
