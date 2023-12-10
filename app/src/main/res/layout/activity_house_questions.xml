@@ -55,7 +55,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginRight="25dp"
             android:backgroundTint="@color/purple_200"
-            android:onClick="addChipToGroup"
+            android:onClick="addLocationGroup"
             android:text="Add" />
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/locationChipGroup"
@@ -314,10 +314,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/minimumPriceSpinner"
-            android:backgroundTint="@color/btnclr"
-            android:onClick="submitPreferenceBtn"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
+            android:backgroundTint="@color/btnclr"
+            android:onClick="submitPreferences"
             android:text="Submit" />
 
 

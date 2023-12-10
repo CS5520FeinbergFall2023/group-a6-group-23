@@ -27,21 +27,29 @@ import java.util.List;
 
 public class HouseQuestionsActivity extends AppCompatActivity {
 
-    private float x1,x2;
-    static final int MIN_DISTANCE = 150;
-
     private EditText location;
     private ChipGroup chipGroup;
     private Button addLocation;
-    private CheckBox apartment, townhouse, condo, duplex;
-    private String numOfBeds, numOfBaths;
-    private String minPrice, maxPrice;
+    private CheckBox apartment;
+    private CheckBox townhouse;
+    private CheckBox condo;
+    private CheckBox duplex;
+    private String totalBeds;
+    private String totalBaths;
+    private String minPrice;
+    private String maxPrice;
 
-    private List<String> myPreferredLocations;
-    private List<String> myPreferredHouseType;
+    private List<String> locationPreference;
+    private List<String> housePreference;
 
     Bundle bundle = null;
-    String userKey, avatarId, seekerFullName, seekerEmailId, seekerPhone, legalSex, age;
+    String userKey;
+    String avatarId;
+    String seekerFullName;
+    String seekerEmailId;
+    String seekerPhone;
+    String legalSex;
+    String age;
 
     FirebaseDatabase firebaseDatabase;
 
@@ -58,6 +66,9 @@ public class HouseQuestionsActivity extends AppCompatActivity {
         // get reference for the database.
         databaseReference = firebaseDatabase.getReference("");
 
+        locationPreference = new ArrayList<>();
+        housePreference = new ArrayList<>();
+
         //Get data from previous.
         bundle = getIntent().getExtras();
         userKey = bundle.getString("userKey");
@@ -71,7 +82,6 @@ public class HouseQuestionsActivity extends AppCompatActivity {
             age = "18";
         }
 
-
         location = (EditText) findViewById(R.id.editTextTextLocation);
         addLocation = (Button) findViewById(R.id.addLocationBtn);
         chipGroup = findViewById(R.id.locationChipGroup);
@@ -84,13 +94,13 @@ public class HouseQuestionsActivity extends AppCompatActivity {
         RadioGroup numberOfBedsRG  = (RadioGroup) findViewById(R.id.bedroomRadioGroup);
         numberOfBedsRG.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton radioButton = (RadioButton) findViewById(checkedId);
-            numOfBeds = radioButton.getText().toString();
+            totalBeds = radioButton.getText().toString();
         });
 
         RadioGroup numberOfBathsRG = (RadioGroup) findViewById(R.id.bathroomRadioGroup);
         numberOfBathsRG.setOnCheckedChangeListener((group, checkedId) -> {
             RadioButton radioButton = (RadioButton) findViewById(checkedId);
-            numOfBaths = radioButton.getText().toString();
+            totalBaths = radioButton.getText().toString();
         });
 
         Spinner minimumPriceSpinner = (Spinner) findViewById(R.id.minimumPriceSpinner);
@@ -128,15 +138,44 @@ public class HouseQuestionsActivity extends AppCompatActivity {
             }
         });
 
-            myPreferredLocations = new ArrayList<>();
-            myPreferredHouseType = new ArrayList<>();
+    }
+
+    /**
+     * Method called on submitting the preference.
+     * @param view current view.
+     */
+    public void submitPreferences(View view){
+
+        //Determine the checkboxes checked for type of house
+        if (apartment.isChecked()) housePreference.add("Apartment");
+        if (townhouse.isChecked()) housePreference.add("Townhouse");
+        if (condo.isChecked()) housePreference.add("Condo");
+        if (duplex.isChecked()) housePreference.add("Duplex");
+
+        //Create preference object.
+        Preference myPref = new Preference(avatarId, seekerFullName, seekerEmailId, seekerPhone, legalSex,
+                Integer.parseInt(age), locationPreference, housePreference,
+                totalBeds, totalBaths, Integer.parseInt(minPrice.substring(1)), Integer.parseInt(maxPrice.substring(1)));
+
+        //Update preference.
+        databaseReference.child("seekers").child(userKey).child("myPreference").setValue(myPref).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(HouseQuestionsActivity.this, "Preference update is unavailable. Please try again later", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Intent clickIntent = new Intent(HouseQuestionsActivity.this, PropertySeekerActivity.class);
+        clickIntent.putExtra("userKey", userKey);
+        startActivity(clickIntent);
+
     }
 
     /**
      * Method that is invoked on click of add location button, adds chips to the chip group.
      * @param view current view.
      */
-    public void addChipToGroup(View view){
+    public void addLocationGroup(View view){
 
         String loc = location.getText().toString();
 
@@ -148,55 +187,16 @@ public class HouseQuestionsActivity extends AppCompatActivity {
 
         //add chip into the chip group
         chipGroup.addView(chip);
-        myPreferredLocations.add(location.getText().toString());
+        locationPreference.add(location.getText().toString());
 
         //on close of each chip
         chip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myPreferredLocations.remove(loc);
+                locationPreference.remove(loc);
                 chipGroup.removeView(chip);
             }
         });
-
-    }
-
-    /**
-     * Method called on submitting the preference.
-     * @param view current view.
-     */
-    public void submitPreferenceBtn(View view){
-
-        //Determine the checkboxes checked for type of house
-        if(apartment.isChecked()){
-            myPreferredHouseType.add("Apartment");
-        }
-        if(townhouse.isChecked()){
-            myPreferredHouseType.add("Townhouse");
-        }
-        if(condo.isChecked()){
-            myPreferredHouseType.add("Condo");
-        }
-        if(duplex.isChecked()){
-            myPreferredHouseType.add("Duplex");
-        }
-
-        //Create preference object.
-        Preference myPref = new Preference(avatarId, seekerFullName, seekerEmailId, seekerPhone, legalSex,
-                Integer.parseInt(age), myPreferredLocations, myPreferredHouseType,
-                numOfBeds, numOfBaths, Integer.parseInt(minPrice.substring(1)), Integer.parseInt(maxPrice.substring(1)));
-
-        //Update preference.
-        databaseReference.child("seekers").child(userKey).child("myPreference").setValue(myPref).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(HouseQuestionsActivity.this, "Unable to update preference. Please try again later", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        Intent clickIntent = new Intent(HouseQuestionsActivity.this, PropertySeekerActivity.class);
-        clickIntent.putExtra("userKey", userKey);
-        startActivity(clickIntent);
 
     }
 
