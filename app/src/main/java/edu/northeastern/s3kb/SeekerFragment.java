@@ -66,6 +66,9 @@ public class SeekerFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                 } else {
                     user = new SeekerUser(userName.getText().toString(), "seekers");
+                    Preference pref = new Preference();
+                    pref.setMaximumPrice(5000);
+                    user.setMyPreference(pref);
                     addDataToFirebase(user);
                 }
 
@@ -89,22 +92,42 @@ public class SeekerFragment extends Fragment {
                         //user name exists
                         userKey = data.getKey();
                         exists[0] = true;
-                        Toast.makeText(requireContext(), "logged in successfully!", Toast.LENGTH_SHORT).show();
-
-                        if("seekers".equalsIgnoreCase(user.getUserType())){
-                            Intent clickIntent = new Intent(requireContext(), PropertySeekerActivity.class);
-                            clickIntent.putExtra("userKey", userKey);
-                            startActivity(clickIntent);
-                        }
-                        return;
+                        break;
                     }
                 }
-                Toast.makeText(requireContext(), "Added new Property Seeker!", Toast.LENGTH_SHORT).show();
 
-                if("seekers".equalsIgnoreCase(user.getUserType())){
-                    Intent clickIntent = new Intent(requireContext(), PropertySeekerActivity.class);
-                    clickIntent.putExtra("userKey", userKey);
-                    startActivity(clickIntent);
+                if (!exists[0]) {
+                    //user name does not exists, create new
+                    // data base reference will sends data to firebase.
+                    DatabaseReference db = databaseReference.child(user.getUserType()).push();
+                    userKey = db.getKey();
+                    db.setValue(user).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            created[0] = false;
+                            Toast.makeText(requireContext(), "Could not Add User, Try again", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    created[0] = false;
+                }
+                if (created[0]) {
+                    Toast.makeText(requireContext(), "Added new Property Seeker!", Toast.LENGTH_SHORT).show();
+
+                    if("seekers".equalsIgnoreCase(user.getUserType())){
+                        Intent clickIntent = new Intent(requireContext(), PropertySeekerActivity.class);
+                        clickIntent.putExtra("userKey", userKey);
+                        startActivity(clickIntent);
+                    }
+
+                } else {
+                    Toast.makeText(requireContext(), "logged in successfully!", Toast.LENGTH_SHORT).show();
+
+                    if("seekers".equalsIgnoreCase(user.getUserType())){
+                        Intent clickIntent = new Intent(requireContext(), PropertySeekerActivity.class);
+                        clickIntent.putExtra("userKey", userKey);
+                        startActivity(clickIntent);
+                    }
                 }
             }
 
@@ -114,6 +137,8 @@ public class SeekerFragment extends Fragment {
                 System.out.println(error.getMessage());
             }
         });
+
+
 
     }
 }

@@ -81,7 +81,7 @@ public class OwnerLoginFragment extends Fragment {
         } else if (passwordStr.isEmpty()) {
             this.password.setError("Please Enter Password");
         }
-        else if (passwordStr.length() < 8) {
+        else if (passwordStr.length() < 6) {
             this.password.setError("Password should be more than eight characters");
         } else {
             progressDialog.setTitle("Logging In");

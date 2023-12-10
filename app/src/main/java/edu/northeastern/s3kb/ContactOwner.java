@@ -62,6 +62,7 @@ public class ContactOwner extends AppCompatActivity {
         ownEmail = findViewById(R.id.ownerEmail);
         phoneNumber = findViewById(R.id.phoneNumber);
         send = findViewById(R.id.sendMail);
+        Log.v("KAUSHIK", houseId + houseDescription + location + address +  userKey + ownName + ownEmail + phoneNumber + send);
 
         databaseReference2.child("seekers").child(userKey).child("myPreference").addValueEventListener(new ValueEventListener() {
             @Override
@@ -84,14 +85,11 @@ public class ContactOwner extends AppCompatActivity {
                 if(j!= null){
                     gender = j;
                 }
-                body = String.format("Hey Next Rent Manager, %s I really loved your property at %s. I would like to submit an application for this property. %sThe following are my application details :%sFull Name : %s Gender : You can reach me at : %s Or email me at: %sThank you, Cheers", System.lineSeparator()+System.lineSeparator(), address, System.lineSeparator()+System.lineSeparator(), System.lineSeparator()+System.lineSeparator(),x +System.lineSeparator(), j+System.lineSeparator(), y+System.lineSeparator(), i+System.lineSeparator()+System.lineSeparator()); ;
-
+                body = String.format("Hey Next Rent Manager, %s I really loved your property at %s. I would like to submit an application for this property. %sThe following are my application details :%sFull Name : %s Gender : You can reach me at : %s Or email me at: %sThank you, Cheers", System.lineSeparator()+System.lineSeparator(), address, System.lineSeparator()+System.lineSeparator(), System.lineSeparator()+System.lineSeparator(),x +System.lineSeparator(), j+System.lineSeparator(), y+System.lineSeparator(), i+System.lineSeparator()+System.lineSeparator());
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -108,6 +106,7 @@ public class ContactOwner extends AppCompatActivity {
                     while (iterator2.hasNext()) {
                         DataSnapshot next = (DataSnapshot) iterator2.next();
                         user = String.valueOf(next.child("houseId").getValue());
+                        Log.v("KAUSHIK", user + "  ,  " + houseId);
                         if(Objects.equals(user, houseId)) {
                             String id = String.valueOf(next.child("userId").getValue());
                             DataSnapshot d  = dataSnapshot.child("Owner").child(id);
@@ -118,7 +117,7 @@ public class ContactOwner extends AppCompatActivity {
                             String phone = String.valueOf(d.child("phoneNumber").getValue());
                             phoneNumber.setText(phone);
 
-
+                            Log.v("KAUSHIK", next.child("userId").getValue().toString());
                         }
 
                         Property article = new Property(String.valueOf(next.child("houseId").getValue()),
@@ -132,8 +131,6 @@ public class ContactOwner extends AppCompatActivity {
                                 String.valueOf(next.child("state").getValue()),
                                 String.valueOf(next.child("type").getValue()),String.valueOf(next.child("baths")),
                                 String.valueOf(next.child("address")));
-
-
                     }
                 }
             }
@@ -149,10 +146,12 @@ public class ContactOwner extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri data = Uri.parse("mailto:"+ownEmail.getText().toString()+"?subject=" + Uri.encode(subject) + "&body=" + Uri.encode(body));
-                intent.setData(data);
-                startActivity(intent);
+                if(ownEmail != null) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Uri data = Uri.parse("mailto:" + ownEmail.getText().toString() + "?subject=" + Uri.encode(subject) + "&body=" + Uri.encode(body));
+                    intent.setData(data);
+                    startActivity(intent);
+                }
             }
         });
 

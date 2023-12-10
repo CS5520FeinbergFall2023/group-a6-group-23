@@ -26,73 +26,40 @@ public class SeekerFavoriteActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayList<favProperty> favoriteProperties;
 
-    private FirebaseDatabase firebaseDatabase;
-
     private DatabaseReference db;
 
-    private Bundle bundle = null;
     private String userKey;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seeker_favorite);
 
+        retrieveUserKey();
+        initializeRecyclerView();
+        initializeDatabaseReference();
+        populateFavoriteProperties();
+        setupBottomNavigationView();
+    }
+
+    private void initializeRecyclerView() {
         recyclerView = findViewById(R.id.favRecycler);
-
-        userKey = getIntent().getStringExtra("userKey");
-
         favoriteProperties = new ArrayList<>();
         adapter = new FavoritesAdapter(SeekerFavoriteActivity.this, favoriteProperties, userKey);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
-        bundle = getIntent().getExtras();
-        userKey = bundle.getString("userKey");
-
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        db = firebaseDatabase.getReference("");
-
-        init();
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.page_favorites);
-
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                if(item.getItemId() == R.id.page_home) {
-                    Intent intent = new Intent(getApplicationContext(),PropertySeekerActivity.class);
-                    intent.putExtra("userKey", userKey);
-                    startActivity(intent);
-                    overridePendingTransition(0,0);
-                    return true;
-                }
-
-                if(item.getItemId() == R.id.page_favorites) {
-                    return true;
-                }
-
-                if(item.getItemId() == R.id.page_profile) {
-                    Intent clickIntent1 = new Intent(SeekerFavoriteActivity.this, SeekerProfileActivity.class);
-                    clickIntent1.putExtra("userKey", userKey);
-                    startActivity(clickIntent1);
-                    overridePendingTransition(0,0);
-                    return true;
-                }
-                return false;
-            }
-        });
-
     }
 
-    private void init() {
+    private void retrieveUserKey() {
+        userKey = getIntent().getStringExtra("userKey");
+    }
 
+    private void initializeDatabaseReference() {
         db = FirebaseDatabase.getInstance().getReference("seekers");
+    }
+
+    private void populateFavoriteProperties() {
         db.child(userKey).child("favorites")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -110,17 +77,42 @@ public class SeekerFavoriteActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) { }
                 });
+    }
 
+    private void setupBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.page_favorites);
 
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(item.getItemId() == R.id.page_home) {
+                    navigateTo(PropertySeekerActivity.class);
+                    return true;
+                }
+                else if(item.getItemId() == R.id.page_favorites)
+                        return true;
+                else if(item.getItemId() == R.id.page_profile) {
+                    navigateTo(SeekerProfileActivity.class);
+                    return true;
+                }
+                else{
+                        return false;
+                }
+            }
+        });
+    }
+
+    private void navigateTo(Class<?> cls) {
+        Intent intent = new Intent(getApplicationContext(), cls);
+        intent.putExtra("userKey", userKey);
+        startActivity(intent);
+        overridePendingTransition(0,0);
     }
 
     @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
-        Intent clickIntent1 = new Intent(SeekerFavoriteActivity.this, PropertySeekerActivity.class);
-        clickIntent1.putExtra("userKey", userKey);
-        startActivity(clickIntent1);
+    public void onBackPressed() {
+        navigateTo(PropertySeekerActivity.class);
         finish();
     }
 }

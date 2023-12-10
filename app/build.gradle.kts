@@ -21,6 +21,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -40,6 +41,7 @@ dependencies {
     implementation ("com.google.android.material:material:1.2.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-firestore:24.4.1")
     implementation("com.google.firebase:firebase-storage:20.1.0")
     implementation("com.google.android.gms:play-services-location:17.0.0")

@@ -34,11 +34,8 @@ public class Listings extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PropertyListAdapterOwner adapter;
     private ArrayList<Property> listings = new ArrayList<>();
-
-    DatabaseReference databaseReference;
-    FirebaseDatabase firebaseDatabase;
     DatabaseReference reference;
-    FloatingActionButton floating;
+    FloatingActionButton add;
 
 
     @Override
@@ -50,9 +47,9 @@ public class Listings extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Listings.this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        floating = findViewById(R.id.floatingAdd);
+        add = findViewById(R.id.floatingAdd);
         getAllProperties();
-        floating.setOnClickListener(new View.OnClickListener() {
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Listings.this, AddRentalActivity.class));

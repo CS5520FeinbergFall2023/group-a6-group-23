@@ -23,7 +23,6 @@ public class AddRentalActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private EditText addressEditText;
-    private EditText aptUnitNumberEditText;
     private EditText stateEditText;
     private EditText countryEditText;
     private EditText cityEditText;
