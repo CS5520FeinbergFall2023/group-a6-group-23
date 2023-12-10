@@ -5,7 +5,6 @@ package edu.northeastern.s3kb;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -62,7 +61,6 @@ public class ContactOwner extends AppCompatActivity {
         ownEmail = findViewById(R.id.ownerEmail);
         phoneNumber = findViewById(R.id.phoneNumber);
         send = findViewById(R.id.sendMail);
-        Log.v("KAUSHIK", houseId + houseDescription + location + address +  userKey + ownName + ownEmail + phoneNumber + send);
 
         databaseReference2.child("seekers").child(userKey).child("myPreference").addValueEventListener(new ValueEventListener() {
             @Override
@@ -106,7 +104,6 @@ public class ContactOwner extends AppCompatActivity {
                     while (iterator2.hasNext()) {
                         DataSnapshot next = (DataSnapshot) iterator2.next();
                         user = String.valueOf(next.child("houseId").getValue());
-                        Log.v("KAUSHIK", user + "  ,  " + houseId);
                         if(Objects.equals(user, houseId)) {
                             String id = String.valueOf(next.child("userId").getValue());
                             DataSnapshot d  = dataSnapshot.child("Owner").child(id);
@@ -116,8 +113,6 @@ public class ContactOwner extends AppCompatActivity {
                             ownEmail.setText(emailId);
                             String phone = String.valueOf(d.child("phoneNumber").getValue());
                             phoneNumber.setText(phone);
-
-                            Log.v("KAUSHIK", next.child("userId").getValue().toString());
                         }
 
                         Property article = new Property(String.valueOf(next.child("houseId").getValue()),
