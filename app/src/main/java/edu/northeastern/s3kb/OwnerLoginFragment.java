@@ -74,7 +74,6 @@ public class OwnerLoginFragment extends Fragment {
     private void login() {
         String emailStr = this.email.getText().toString();
         String passwordStr = this.password.getText().toString();
-
         if (emailStr.isEmpty()) {
             this.email.setError("Please Enter Email");
         } else if (!pattern.matcher(emailStr).matches()) {
@@ -107,6 +106,5 @@ public class OwnerLoginFragment extends Fragment {
 
     private void goToListings() {
         startActivity(new Intent(requireContext(), Listings.class));
-
     }
 }

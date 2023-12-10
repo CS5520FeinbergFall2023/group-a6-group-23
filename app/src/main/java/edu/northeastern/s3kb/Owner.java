@@ -8,11 +8,11 @@ public class Owner {
     private String propertyType;
 
     private String city;
-    
+
     private String state;
-    
+
     private int zipcode;
-    
+
 
     public Owner(String username, String address, String unitNumber, String propertyType, String city, String state,
                  int zipcode) {

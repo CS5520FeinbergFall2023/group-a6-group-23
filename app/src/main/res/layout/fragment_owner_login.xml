@@ -79,10 +79,7 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:orientation="horizontal">
-
-
         </LinearLayout>
-
     </LinearLayout>
 
 
