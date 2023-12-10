@@ -44,7 +44,6 @@ public class StickersHistory extends AppCompatActivity {
 
         recycleLayoutManager = new LinearLayoutManager(this);
         stickerRecyclerView = findViewById(R.id.recycleViewStickersHistory);
-        stickerRecyclerView.setHasFixedSize(true);
 
         //can remove this used for testing
         String[] stickerData = {"captainamerica_sticker", "drstrange_sticker", "spiderman_sticker",

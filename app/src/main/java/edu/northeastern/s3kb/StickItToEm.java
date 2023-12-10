@@ -72,7 +72,6 @@ public class StickItToEm extends AppCompatActivity {
 
         recycleLayoutManager = new LinearLayoutManager(this);
         stickerRecyclerView = findViewById(R.id.recycleViewStickers);
-        stickerRecyclerView.setHasFixedSize(true);
         stickerAdapter = new StickerAdapter(this, stickerIdentifiers, userName);
         stickerRecyclerView.setAdapter(stickerAdapter);
         stickerRecyclerView.setLayoutManager(recycleLayoutManager);
