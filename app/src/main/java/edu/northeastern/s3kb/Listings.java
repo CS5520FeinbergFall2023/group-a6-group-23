@@ -10,6 +10,7 @@ package edu.northeastern.s3kb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -73,6 +74,9 @@ public class Listings extends AppCompatActivity {
                 listings.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Property article = dataSnapshot.getValue(Property.class);
+                    if(article.getHouseImage() == null) {
+                        article.setHouseImage("https://firebasestorage.googleapis.com/v0/b/s3kb-b07f0.appspot.com/o/Uploads%2Fhouse.jpeg?alt=media&token=2377f3e6-b312-4adc-9b5d-3f18b6443827");
+                    }
                     listings.add(article);
                     Collections.reverse(listings);
                 }
