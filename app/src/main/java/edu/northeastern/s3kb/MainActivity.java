@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Repeat the alarm every minute
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                60000, pIntent);
+                12*60*60*1000, pIntent);
     }
 
     private void createNotificationChannel() {
