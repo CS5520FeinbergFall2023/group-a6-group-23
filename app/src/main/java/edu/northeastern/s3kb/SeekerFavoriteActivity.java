@@ -35,8 +35,8 @@ public class SeekerFavoriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seeker_favorite);
 
-        initializeRecyclerView();
         retrieveUserKey();
+        initializeRecyclerView();
         initializeDatabaseReference();
         populateFavoriteProperties();
         setupBottomNavigationView();
