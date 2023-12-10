@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -52,19 +53,26 @@ public class AddRentalActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String address = addressEditText.getText().toString();
-                String propertyTpe = propertyTypeSpinner.getSelectedItem().toString();
+                String propertyType = propertyTypeSpinner.getSelectedItem().toString();
                 String city = cityEditText.getText().toString();
                 String state = stateEditText.getText().toString();
                 String country = countryEditText.getText().toString();
+                if (address.length() == 0 || propertyType.length() == 0 || city.length() == 0 ||
+                    state.length() == 0 || country.length() == 0) {
+                    Toast.makeText(AddRentalActivity.this,
+                            "Please enter all the required details", Toast.LENGTH_SHORT).show();
+                    nextButton.setError("Please enter all the required details");
+                } else {
+                    Intent i = new Intent(AddRentalActivity.this, AddRentalImagesActivity.class);
+                    i.putExtra("country", country);
+                    i.putExtra("address", address);
+                    i.putExtra("state", state);
+                    i.putExtra("city", city);
+                    i.putExtra("type", propertyType);
+                    startActivity(i);
+                    finish();
+                }
 
-                Intent i = new Intent(AddRentalActivity.this, AddRentalImagesActivity.class);
-                i.putExtra("country", country);
-                i.putExtra("address", address);
-                i.putExtra("state", state);
-                i.putExtra("city", city);
-                i.putExtra("type", propertyTpe);
-                startActivity(i);
-                finish();
             }
         });
 

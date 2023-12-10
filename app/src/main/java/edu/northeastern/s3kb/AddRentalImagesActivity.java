@@ -86,16 +86,28 @@ public class AddRentalImagesActivity extends AppCompatActivity {
                 String rentPerRoom = rentEt.getText().toString();
                 String houseDescription = houseDescriptionEt.getText().toString();
                 String baths = bathroomsEt.getText().toString();
-                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                assert firebaseUser != null;
-                String userId = firebaseUser.getUid();
-                databaseReference = FirebaseDatabase.getInstance().getReference().child("houses").child(userId);
-                House house = new House(
-                        houseId, noOfRoom, houseDescription,
-                        city, rentPerRoom, userId,
-                        country, state, type,
-                        baths, address, imageStringValue);
-                databaseReference.child(houseId).setValue(house);
+                if (noOfRoom.length() == 0 || rentPerRoom.length() == 0 || baths.length() == 0 ) {
+                    Toast.makeText(AddRentalImagesActivity.this,
+                            "Please enter all the required details", Toast.LENGTH_SHORT).show();
+                    submitBtn.setError("Please enter all the required details");
+                } else
+                {
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    assert firebaseUser != null;
+                    String userId = firebaseUser.getUid();
+                    databaseReference = FirebaseDatabase.getInstance().getReference().child("houses").child(userId);
+                    House house = new House(
+                            houseId, noOfRoom, houseDescription,
+                            city, rentPerRoom, userId,
+                            country, state, type,
+                            baths, address, imageStringValue);
+                    databaseReference.child(houseId).setValue(house);
+                    Toast.makeText(AddRentalImagesActivity.this, "Property successfully added", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(AddRentalImagesActivity.this, Listings.class);
+                    startActivity(i);
+                    finish();
+                }
+
             }
         });
     }

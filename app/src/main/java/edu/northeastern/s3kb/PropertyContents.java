@@ -31,23 +31,22 @@ import java.util.List;
 
 public class PropertyContents extends AppCompatActivity {
 
-    TextView tv_houseDesc;
-    ImageView iv_houseImage;
-    DatabaseReference reference;
     String _rooms, _rent, _location, _state, _country,_address,_type,_baths,_houseDec;
     Button updateB;
     Button _delete;
     TextView roomsTv,typeTv, rent,bathTv;
     String houseId, noOfRoom, rentPerRoom, houseDescription, houseLocation, country, type, state,address,baths;
     Button bLocation;
-    String lat, lon;
-    Double latitude, longitude;
-    Boolean updateStatus;
-    TextInputEditText stateTv, countryTv,locationTv,houseDesc,addressTv;
+    TextView tv_houseDesc;
+    ImageView iv_houseImage;
+    DatabaseReference reference;
+    TextInputEditText stateTv,locationTv,addressTv, countryTv;
     TextInputEditText room_t,rent_t,type_t,bath_t;
     LinearLayout updateDelete,cards,locationLinear;
     Button editButton;
-    TextInputLayout roomLayout, rentLayout, typeLayout,bathLayout;
+    Double latitude, longitude;
+    Boolean updateStatus;
+    TextInputLayout bathLayout, roomLayout, typeLayout, rentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +61,15 @@ public class PropertyContents extends AppCompatActivity {
         houseId = intent.getStringExtra("houseId");
         noOfRoom = intent.getStringExtra("noOfRoom");
         rentPerRoom = intent.getStringExtra("rentPerRoom");
-        houseDescription = intent.getStringExtra("houseDescription");
         houseLocation = intent.getStringExtra("houseLocation");
         String houseImage = intent.getStringExtra("houseImage");
-        String user = intent.getStringExtra("userId");
         country = intent.getStringExtra("country");
         state = intent.getStringExtra("state");
         type = intent.getStringExtra("type");
         address = intent.getStringExtra("address");
         baths = intent.getStringExtra("baths");
+        houseDescription = intent.getStringExtra("houseDescription");
+
 
 
         reference = FirebaseDatabase.getInstance().getReference().child("houses").child(userId).child(houseId);
@@ -78,6 +77,11 @@ public class PropertyContents extends AppCompatActivity {
         iv_houseImage = findViewById(R.id.house_image);
         updateB = findViewById(R.id.editContents);
         _delete = findViewById(R.id.deleteContents);
+        bathTv = findViewById(R.id.bath_tv);
+        room_t = findViewById(R.id.rooms_t);
+        rent_t = findViewById(R.id.rent_t);
+        type_t = findViewById(R.id.type_t);
+        bath_t = findViewById(R.id.bath_t);
         roomsTv = findViewById(R.id.rooms_tv);
         rent = findViewById(R.id.rent_tv);
         locationTv = findViewById(R.id.location_tv);
@@ -85,20 +89,15 @@ public class PropertyContents extends AppCompatActivity {
         countryTv = findViewById(R.id.country_tv);
         typeTv = findViewById(R.id.type_tv);
         addressTv = findViewById(R.id.address_tv);
-        bathTv = findViewById(R.id.bath_tv);
-        room_t = findViewById(R.id.rooms_t);
-        rent_t = findViewById(R.id.rent_t);
-        type_t = findViewById(R.id.type_t);
-        bath_t = findViewById(R.id.bath_t);
 
-
-        updateDelete = findViewById(R.id.updateDeleteLinear);
-        cards = findViewById(R.id.cardLinear);
-        locationLinear = findViewById(R.id.locationLinear);
         roomLayout = findViewById(R.id.roomLayout);
         rentLayout = findViewById(R.id.rentLayout);
         typeLayout = findViewById(R.id.typeLayout);
         bathLayout =findViewById(R.id.bathLayout);
+        updateDelete = findViewById(R.id.updateDeleteLinear);
+        cards = findViewById(R.id.cardLinear);
+        locationLinear = findViewById(R.id.locationLinear);
+
 
         roomLayout.setVisibility(View.GONE);
         rentLayout.setVisibility(View.GONE);
@@ -109,15 +108,15 @@ public class PropertyContents extends AppCompatActivity {
         bLocation = findViewById(R.id.getLoc);
         editButton = findViewById(R.id.editButton);
 
-        roomsTv.setText(noOfRoom);
-        rent.setText(rentPerRoom);
-        locationTv.setText(houseLocation);
         stateTv.setText(state);
         countryTv.setText(country);
         typeTv.setText(type);
         tv_houseDesc.setText(houseDescription);
         addressTv.setText(address);
         bathTv.setText(baths);
+        roomsTv.setText(noOfRoom);
+        rent.setText(rentPerRoom);
+        locationTv.setText(houseLocation);
 
         room_t.setText(noOfRoom);
         rent_t.setText("$" + rentPerRoom);
@@ -149,16 +148,15 @@ public class PropertyContents extends AppCompatActivity {
         try {
             addressList = geocoder.getFromLocationName(address + "," + houseLocation, 1);
             if (addressList != null) {
-                latitude = addressList.get(0).getLatitude();
                 longitude = addressList.get(0).getLongitude();
+                latitude = addressList.get(0).getLatitude();
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         } catch (IndexOutOfBoundsException e) {
             bLocation.setVisibility(View.GONE);
-            //tv_houseDesc.setText("no location");
-            Toast.makeText(this, "Inaccurate Data traced!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Inaccurate Data!", Toast.LENGTH_SHORT).show();
 
         }
         Glide.with(PropertyContents.this).load(houseImage).into(iv_houseImage);
@@ -190,7 +188,6 @@ public class PropertyContents extends AppCompatActivity {
                 if (mapIntent.resolveActivity(packageManager) != null) {
                     startActivity(mapIntent);
                 } else {
-                    Log.v("TESTING","Google Maps not istalled!");
                 }
             }
         });
@@ -218,7 +215,7 @@ public class PropertyContents extends AppCompatActivity {
     private void deleteProperty() {
         AlertDialog.Builder build = new AlertDialog.Builder(this);
         build.setTitle("Delete?");
-        build.setMessage("Do you wanna delete property")
+        build.setMessage("Do you want to delete the property")
                 .setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -250,6 +247,18 @@ public class PropertyContents extends AppCompatActivity {
             updateStatus = true;
 
         }
+        if (!_type.equals(type_t.getText().toString())) {
+            reference.child("type").setValue(type_t.getText().toString());
+            updateStatus = true;
+        }
+        if (!_baths.equals(bath_t.getText().toString())) {
+            reference.child("baths").setValue(bath_t.getText().toString());
+            updateStatus = true;
+        }
+        if (!_houseDec.equals(tv_houseDesc.getText().toString())) {
+            reference.child("houseDescription").setValue(tv_houseDesc.getText().toString());
+            updateStatus = true;
+        }
         if (!_state.equals(stateTv.getText().toString())) {
             reference.child("state").setValue(stateTv.getText().toString());
             updateStatus = true;
@@ -270,31 +279,16 @@ public class PropertyContents extends AppCompatActivity {
             reference.child("address").setValue(addressTv.getText().toString());
             updateStatus = true;
         }
-        if (!_type.equals(type_t.getText().toString())) {
-            reference.child("type").setValue(type_t.getText().toString());
-            updateStatus = true;
-        }
-        if (!_baths.equals(bath_t.getText().toString())) {
-            reference.child("baths").setValue(bath_t.getText().toString());
-            updateStatus = true;
-        }
-        if (!_houseDec.equals(tv_houseDesc.getText().toString())) {
-            reference.child("houseDescription").setValue(tv_houseDesc.getText().toString());
-            updateStatus = true;
-        }
-
-
-
     }
 
     private void updateStatusCheck() {
         if (updateStatus) {
-            Toast.makeText(this, "Property Details updated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Property changes updated", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, Listings.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             finish();
         } else {
-            Toast.makeText(this, "No Update made", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No Updates", Toast.LENGTH_SHORT).show();
         }
     }
 
