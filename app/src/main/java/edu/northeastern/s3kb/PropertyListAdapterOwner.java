@@ -65,11 +65,6 @@ public class PropertyListAdapterOwner extends RecyclerView.Adapter<PropertyListA
     }
 
     private void putExtrasToIntent(Intent intent, Property model) {
-        intent.putExtra("houseId", model.getHouseId());
-        intent.putExtra("noOfRoom", model.getNoOfRoom());
-        intent.putExtra("rentPerRoom", model.getRentPerRoom());
-        intent.putExtra("houseDescription", model.getHouseDescription());
-        intent.putExtra("houseLocation", model.getHouseLocation());
         intent.putExtra("houseImage", model.getHouseImage());
         intent.putExtra("userId", model.getUserId());
         intent.putExtra("country", model.getCountry());
@@ -77,6 +72,11 @@ public class PropertyListAdapterOwner extends RecyclerView.Adapter<PropertyListA
         intent.putExtra("type", model.getType());
         intent.putExtra("address", model.getAddress());
         intent.putExtra("baths", model.getBaths());
+        intent.putExtra("houseId", model.getHouseId());
+        intent.putExtra("noOfRoom", model.getNoOfRoom());
+        intent.putExtra("rentPerRoom", model.getRentPerRoom());
+        intent.putExtra("houseDescription", model.getHouseDescription());
+        intent.putExtra("houseLocation", model.getHouseLocation());
     }
 
     @Override
